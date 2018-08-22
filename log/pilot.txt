@@ -1,0 +1,197 @@
+$ ./pilot-discovery.exe discovery --meshConfig ./mesh.txt  --grpcAddr "192.168.170.1:15010" --secureGrpcAddr "" --log_output_level ads:debug
+2018-08-22T10:42:24.690546Z     info    parsed scheme: ""
+2018-08-22T10:42:24.690546Z     info    scheme "" not registered, fallback to default scheme
+2018-08-22T10:42:24.690546Z     info    ccResolverWrapper: sending new addresses to cc: [{127.0.0.1:2379 0  <nil>}]
+2018-08-22T10:42:24.690546Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-08-22T10:42:24.693546Z     info    args.Mesh.ConfigFile =./mesh.txt
+2018-08-22T10:42:24.695546Z     info    mesh configuration (*v1alpha1.MeshConfig)(0xc0421e0380)(proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 > )
+
+2018-08-22T10:42:24.695546Z     info    version unknown@unknown-unknown-unknown-unknown-unknown
+2018-08-22T10:42:24.695546Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-08-22T10:42:24.695546Z     info    flags (*bootstrap.PilotArgs)(0xc0420f4000)({
+ DiscoveryOptions: (envoy.DiscoveryServiceOptions) {
+  HTTPAddr: (string) (len=5) ":8080",
+  GrpcAddr: (string) (len=19) "192.168.170.1:15010",
+  SecureGrpcAddr: (string) "",
+  MonitoringAddr: (string) (len=5) ":9093",
+  EnableProfiling: (bool) true,
+  EnableCaching: (bool) true,
+  WebhookEndpoint: (string) ""
+ },
+ Namespace: (string) "",
+ Mesh: (bootstrap.MeshArgs) {
+  ConfigFile: (string) (len=10) "./mesh.txt",
+  MixerAddress: (string) "",
+  RdsRefreshDelay: (*duration.Duration)(<nil>)
+ },
+ Config: (bootstrap.ConfigArgs) {
+  ClusterRegistriesConfigmap: (string) "",
+  ClusterRegistriesNamespace: (string) (len=12) "istio-system",
+  Controller: (model.ConfigStoreCache) <nil>
+ },
+ Service: (bootstrap.ServiceArgs) {
+  Registries: ([]string) (len=1 cap=1) {
+   (string) (len=4) "Etcd"
+  },
+  Etcd: (bootstrap.EtcdArgs) {
+   EtcdEndpoints: (string) (len=14) "127.0.0.1:2379",
+   Config: (clientv3.Config) {
+    Endpoints: ([]string) (len=1 cap=1) {
+     (string) (len=14) "127.0.0.1:2379"
+    },
+    AutoSyncInterval: (time.Duration) 0s,
+    DialTimeout: (time.Duration) 5s,
+    DialKeepAliveTime: (time.Duration) 0s,
+    DialKeepAliveTimeout: (time.Duration) 0s,
+    MaxCallSendMsgSize: (int) 0,
+    MaxCallRecvMsgSize: (int) 0,
+    TLS: (*tls.Config)(<nil>),
+    Username: (string) "",
+    Password: (string) "",
+    RejectOldCluster: (bool) false,
+    DialOptions: ([]grpc.DialOption) <nil>,
+    Context: (context.Context) <nil>
+   },
+   EtcdPrefix: (string) (len=6) "/pilot",
+   SdPrefix: (string) (len=3) "/ns"
+  }
+ },
+ MeshConfig: (*v1alpha1.MeshConfig)(0xc0421e0380)(proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 > ),
+ CtrlZOptions: (*ctrlz.Options)(0xc042130ba0)({
+  Port: (uint16) 9876,
+  Address: (string) (len=9) "127.0.0.1"
+ }),
+ Plugins: ([]string) <nil>
+})
+
+2018-08-22T10:42:24.695546Z     info    Adding Etcd registry adapter
+2018-08-22T10:42:24.695546Z     info    etcd url: 127.0.0.1:2379
+2018-08-22T10:42:24.737549Z     info    Discovery service started at http=[::]:8080 grpc=192.168.170.1:15010
+2018-08-22T10:42:24.739549Z     info    controller is running...
+2018-08-22T10:42:24.759550Z     info    ControlZ available at 169.254.142.167:9876
+time="2018-08-22T18:42:31+08:00" level=info msg=Services source="controller.go:50"
+2018-08-22T10:42:31.412930Z     info    List typ=service-entry
+2018-08-22T10:42:31.412930Z     info    List typ=virtual-service
+virtual-service Ok: varr:[{ConfigMeta:{Type:virtual-service Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:hosts:"hello_server" http:<match:<uri:<prefix:"/hello" > > route:<destination:<host:"hello_server" subset:"v1" > weight:90 > route:<destination:<host:"hello_server" subset:"v2" > weight:10 > > }]
+2018-08-22T10:42:31.414930Z     info    ads     ADS:CDS: REQ sidecar~192.168.170.137~~-1 192.168.170.137:32958 raw: node:<id:"sidecar~192.168.170.137~~" cluster:"sidecar" build_version:"f379ad1f0382ecb4b40f0c3550237574c8b9f930/1.8.0-dev/Clean/RELEASE" > type_url:"type.googleapis.com/envoy.api.v2.Cluster"
+time="2018-08-22T18:42:31+08:00" level=info msg=Services source="controller.go:50"
+2018-08-22T10:42:31.414930Z     info    List typ=service-entry
+2018-08-22T10:42:31.414930Z     info    List typ=destination-rule
+destination-rule Ok: varr:[{ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > subsets:<name:"v2" labels:<key:"version" value:"v2" > > }]
+2018-08-22T10:42:31.416931Z     info    buildDefaultCluster cluster:name:"outbound|15001||hello_server" type:EDS connect_timeout:<>
+2018-08-22T10:42:31.416931Z     info    buildDefaultTrafficPolicy env=&{ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00}
+2018-08-22T10:42:31.416931Z     info    buildDefaultCluster cluster:name:"outbound|15001|v1|hello_server" type:EDS connect_timeout:<>
+2018-08-22T10:42:31.416931Z     info    buildDefaultTrafficPolicy env=&{ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00}
+2018-08-22T10:42:31.416931Z     info    buildDefaultCluster cluster:name:"outbound|15001|v2|hello_server" type:EDS connect_timeout:<>
+2018-08-22T10:42:31.416931Z     info    buildDefaultTrafficPolicy env=&{ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00}
+time="2018-08-22T18:42:31+08:00" level=info msg="GetProxyServiceInstances node=&{ClusterID: Type:sidecar IPAddress:192.168.170.137 ID: Domain: Metadata:map[]}" source="controller.go:161"
+2018-08-22T10:42:31.416931Z     info    List typ=service-entry
+time="2018-08-22T18:42:31+08:00" level=info msg="ManagementPorts addr=192.168.170.137" source="controller.go:75"
+2018-08-22T10:42:31.416931Z     info    managementPorts port={Name:http Port:3333 Protocol:HTTP}
+2018-08-22T10:42:31.416931Z     info    buildDefaultCluster cluster:name:"inbound|3333||mgmtCluster" connect_timeout:<> hosts:<socket_address:<address:"127.0.0.1" port_value:3333 > >
+2018-08-22T10:42:31.416931Z     info    buildDefaultTrafficPolicy env=&{ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00}
+2018-08-22T10:42:31.416931Z     info    managementPorts port={Name:custom Port:9999 Protocol:TCP}
+2018-08-22T10:42:31.417931Z     info    buildDefaultCluster cluster:name:"inbound|9999||mgmtCluster" connect_timeout:<> hosts:<socket_address:<address:"127.0.0.1" port_value:9999 > >
+2018-08-22T10:42:31.417931Z     info    buildDefaultTrafficPolicy env=&{ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00}
+2018-08-22T10:42:31.417931Z     info    ads     CDS: PUSH for  "192.168.170.137:32958", Clusters: 6
+2018-08-22T10:42:31.425931Z     debug   ads     ADS:EDS: REQ 192.168.170.137:32958 sidecar~192.168.170.137~~-1 clusters: 3
+2018-08-22T10:42:31.425931Z     info    List typ=destination-rule
+destination-rule Ok: varr:[{ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > subsets:<name:"v2" labels:<key:"version" value:"v2" > > }]
+host hello_server port 15001 labels=[version=v1]
+hit V1 label:version=v1
+2018-08-22T10:42:31.426931Z     info    ads     localityLbEndpointsFromInstances [0xc04252ccb0]
+2018-08-22T10:42:31.426931Z     info    List typ=destination-rule
+destination-rule Ok: varr:[{ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > subsets:<name:"v2" labels:<key:"version" value:"v2" > > }]
+host hello_server port 15001 labels=[version=v2]
+hit V2 label:version=v2
+2018-08-22T10:42:31.427931Z     info    ads     localityLbEndpointsFromInstances [0xc0420f0a10]
+host hello_server port 15001 labels=[]
+hit V0 label
+
+2018-08-22T10:42:31.428931Z     info    ads     localityLbEndpointsFromInstances [0xc0420f0a80]
+2018-08-22T10:42:31.428931Z     debug   ads     EDS: PUSH for sidecar~192.168.170.137~~-1 clusters 3 endpoints 3 empty 0
+2018-08-22T10:42:31.428931Z     debug   ads     ADS:CDS: ACK 192.168.170.137:32958 version_info:"0" node:<id:"sidecar~192.168.170.137~~" cluster:"sidecar" build_version:"f379ad1f0382ecb4b40f0c3550237574c8b9f930/1.8.0-dev/Clean/RELEASE" > type_url:"type.googleapis.com/envoy.api.v2.Cluster" response_nonce:"2018-08-22 18:42:31.4179311 +0800 CST m=+6.770387201"
+2018-08-22T10:42:31.430931Z     debug   ads     ADS:LDS: REQ sidecar~192.168.170.137~~-1 192.168.170.137:32958
+2018-08-22T10:42:31.431931Z     info    BuildListeners env {ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00} node {ClusterID: Type:sidecar IPAddress:192.168.170.137 ID: Domain: Metadata:map[]} push {mutex:{state:0 sema:0} ProxyStatus:map[] Start:2018-08-22 18:42:24.6965467 +0800 CST m=+0.049002801 End:0001-01-01 00:00:00 +0000 UTC}
+time="2018-08-22T18:42:31+08:00" level=info msg="ManagementPorts addr=192.168.170.137" source="controller.go:75"
+time="2018-08-22T18:42:31+08:00" level=info msg="GetProxyServiceInstances node=&{ClusterID: Type:sidecar IPAddress:192.168.170.137 ID: Domain: Metadata:map[]}" source="controller.go:161"
+time="2018-08-22T18:42:31+08:00" level=info msg=Services source="controller.go:50"
+2018-08-22T10:42:31.431931Z     info    List typ=service-entry
+mesh.ProxyListenPort=15001
+buildSidecarOutboundListeners services=[0xc04227d290]
+2018-08-22T10:42:31.431931Z     info    List typ=virtual-service
+virtual-service Ok: varr:[{ConfigMeta:{Type:virtual-service Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:hosts:"hello_server" http:<match:<uri:<prefix:"/hello" > > route:<destination:<host:"hello_server" subset:"v1" > weight:90 > route:<destination:<host:"hello_server" subset:"v2" > weight:10 > > }]
+service=&{Hostname:hello_server Address: ClusterVIPs:map[] Ports:[0xc042499050] ExternalName: ServiceAccounts:[] MeshExternal:false LoadBalancingDisabled:false Resolution:0 CreationTime:0001-01-01 00:00:00 +0000 UTC}
+servicePort={Name:grpc Port:15001 Protocol:GRPC}
+listenerOpts={env:0xc042103920 proxy:0xc04206e420 proxyInstances:[] ip:0.0.0.0 port:15001 protocol:GRPC bindToPort:false filterChainOpts:[] tlsMultiplexed:false}
+listenerOpts ={env:0xc042103920 proxy:0xc04206e420 proxyInstances:[] ip:0.0.0.0 port:15001 protocol:GRPC bindToPort:false filterChainOpts:[0xc0421c3030] tlsMultiplexed:false}
+2018-08-22T10:42:31.433932Z     info    ads     LDS: PUSH for node: addr:"192.168.170.137:32958" listeners:4
+2018-08-22T10:42:31.447932Z     debug   ads     ADS:RDS: REQ 192.168.170.137:32958 sidecar~192.168.170.137~~-1  routes: 1
+time="2018-08-22T18:42:31+08:00" level=info msg="GetProxyServiceInstances node=&{ClusterID: Type:sidecar IPAddress:192.168.170.137 ID: Domain: Metadata:map[]}" source="controller.go:161"
+time="2018-08-22T18:42:31+08:00" level=info msg=Services source="controller.go:50"
+2018-08-22T10:42:31.447932Z     info    List typ=service-entry
+BuildHTTPRoutes env &{ServiceDiscovery:0xc0422a93e0 ServiceAccounts:0xc0422a93e0 IstioConfigStore:0xc042373c20 Mesh:proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 >  MixerSAN:[] PushStatus:0xc042172e00} node &{ClusterID: Type:sidecar IPAddress:192.168.170.137 ID: Domain: Metadata:map[]} push &{mutex:{state:0 sema:0} ProxyStatus:map[] Start:2018-08-22 18:42:24.6965467 +0800 CST m=+0.049002801 End:0001-01-01 00:00:00 +0000 UTC} routeName=15001
+buildSidecarOutboundHTTPRouteConfig services[0]=&{Hostname:hello_server Address: ClusterVIPs:map[] Ports:[0xc042664b70] ExternalName: ServiceAccounts:[] MeshExternal:false LoadBalancingDisabled:false Resolution:0 CreationTime:0001-01-01 00:00:00 +0000 UTC}
+buildSidecarOutboundHTTPRouteConfig svc={Hostname:hello_server Address: ClusterVIPs:map[] Ports:[0xc042664b70] ExternalName: ServiceAccounts:[] MeshExternal:false LoadBalancingDisabled:false Resolution:0 CreationTime:0001-01-01 00:00:00 +0000 UTC}
+buildSidecarOutboundHTTPRouteConfig nameToServiceMap=map[hello_server:0xc04227da70]
+2018-08-22T10:42:31.447932Z     info    List typ=virtual-service
+virtual-service Ok: varr:[{ConfigMeta:{Type:virtual-service Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:hosts:"hello_server" http:<match:<uri:<prefix:"/hello" > > route:<destination:<host:"hello_server" subset:"v1" > weight:90 > route:<destination:<host:"hello_server" subset:"v2" > weight:10 > > }]
+vsHostname=hello_server svcHost=hello_server
+hosts=[] servicesInVirtualService=[0xc04227da70]
+svc=&{Hostname:hello_server Address: ClusterVIPs:map[] Ports:[0xc042664b70] ExternalName: ServiceAccounts:[] MeshExternal:false LoadBalancingDisabled:false Resolution:0 CreationTime:0001-01-01 00:00:00 +0000 UTC}
+serviceByPort=map[15001:[0xc04227da70]]
+2018-08-22T10:42:31.449932Z     info    List typ=destination-rule
+destination-rule Ok: varr:[{ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > subsets:<name:"v2" labels:<key:"version" value:"v2" > > }]
+2018-08-22T10:42:31.450933Z     info    List typ=destination-rule
+destination-rule Ok: varr:[{ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace: Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > subsets:<name:"v2" labels:<key:"version" value:"v2" > > }]
+good match =prefix:"/hello"  http.Match={{%!s(*route.RouteMatch_Prefix=&{/hello}) nil <nil> [] []} %!s(*route.Route_Route=&{0xc042549c20}) <nil> operation:"hello_server:15001/hello*"  map[] [] [] []}
+hosts=[]
+virtualHostWrappers len=1
+virtualHostWrapper Routes len=1
+virtualHostWrapper {Port:15001 Services:[0xc04227da70] VirtualServiceHosts:[] Routes:[{Match:{PathSpecifier:0xc04219ae90 CaseSensitive:nil Runtime:<nil> Headers:[] QueryParameters:[]} Action:0xc0424a2810 Metadata:<nil> Decorator:operation:"hello_server:15001/hello*"  PerFilterConfig:map[] RequestHeadersToAdd:[] ResponseHeadersToAdd:[] ResponseHeadersToRemove:[]}]}
+2018-08-22T10:42:31.453933Z     debug   ads     RDS: Adding route {
+ "name": "15001",
+ "virtualHosts": [
+  {
+   "name": "hello_server:15001",
+   "domains": [
+    "hello_server",
+    "hello_server:15001"
+   ],
+   "routes": [
+    {
+     "match": {
+      "prefix": "/hello"
+     },
+     "route": {
+      "weightedClusters": {
+       "clusters": [
+        {
+         "name": "outbound|15001|v1|hello_server",
+         "weight": 90
+        },
+        {
+         "name": "outbound|15001|v2|hello_server",
+         "weight": 10
+        }
+       ]
+      },
+      "timeout": "0.000s",
+      "useWebsocket": false
+     },
+     "decorator": {
+      "operation": "hello_server:15001/hello*"
+     },
+     "perFilterConfig": {
+     }
+    }
+   ]
+  }
+ ],
+ "validateClusters": false
+} for node &{ sidecar 192.168.170.137   map[]}
+2018-08-22T10:42:31.454933Z     info    ads     ADS: RDS: PUSH for node:  addr:192.168.170.137:32958 routes:1
+2018-08-22T10:42:31.454933Z     debug   ads     ADS:LDS: ACK version_info:"0" node:<id:"sidecar~192.168.170.137~~" cluster:"sidecar" build_version:"f379ad1f0382ecb4b40f0c3550237574c8b9f930/1.8.0-dev/Clean/RELEASE" > type_url:"type.googleapis.com/envoy.api.v2.Listener" response_nonce:"2018-08-22 18:42:31.433932 +0800 CST m=+6.786388101"
+2018-08-22T10:42:31.462933Z     debug   ads     ADS:RDS: ACK 192.168.170.137:32958 sidecar~192.168.170.137~~-1 (&{ sidecar 192.168.170.137   map[]}) 0 2018-08-22 18:42:31.4539332 +0800 CST m=+6.806389301

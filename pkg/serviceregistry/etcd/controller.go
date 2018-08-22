@@ -51,7 +51,6 @@ func (c *Controller) Services() ([]*model.Service, error) {
 	services := make([]*model.Service, 1)
 	services[0] = &model.Service{
 		Hostname: model.Hostname("hello_server"),
-		Address:  "127.0.0.1",
 		Ports:    model.PortList{convertPort(15001, "grpc")},
 	}
 	return services, nil
@@ -59,14 +58,7 @@ func (c *Controller) Services() ([]*model.Service, error) {
 
 // GetService retrieves a service by host name if it exists
 func (c *Controller) GetService(hostname model.Hostname) (*model.Service, error) {
-	log.Infof("GetService hostname=%+v", hostname)
-
-	service := &model.Service{
-		Hostname: hostname,
-		Address:  "127.0.0.1",
-		Ports:    model.PortList{&model.Port{Port: 15001}},
-	}
-	return service, nil
+	return nil, nil
 }
 
 // GetServiceAttributes retrieves namespace of a service if it exists.
@@ -119,10 +111,8 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, port int,
 
 			Service: &model.Service{
 				Hostname: model.Hostname("hello_server"),
-				Address:  "127.0.0.1",
 				Ports:    model.PortList{convertPort(15001, "grpc")},
 			},
-			Labels: convertLabels([]string{"version|v0"}),
 		}
 		return instances, nil
 	}
@@ -139,7 +129,6 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, port int,
 
 			Service: &model.Service{
 				Hostname: model.Hostname("hello_server"),
-				Address:  "127.0.0.1",
 				Ports:    model.PortList{convertPort(15001, "grpc")},
 			},
 			Labels: convertLabels([]string{"version|v1"}),
@@ -157,7 +146,6 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, port int,
 
 			Service: &model.Service{
 				Hostname: model.Hostname("hello_server"),
-				Address:  "127.0.0.1",
 				Ports:    model.PortList{convertPort(15001, "grpc")},
 			},
 			Labels: convertLabels([]string{"version|v2"}),
@@ -165,19 +153,6 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, port int,
 		return instances, nil
 	}
 
-	//instances[1] = &model.ServiceInstance{
-	//	Endpoint: model.NetworkEndpoint{Address: "192.168.170.1",
-	//		Port:        50051,
-	//		ServicePort: convertPort(15001, "grpc"),
-	//	},
-	//	Service: &model.Service{
-	//		Hostname: model.Hostname("hello_server"),
-	//		Address:  "127.0.0.1",
-	//		Ports:    model.PortList{convertPort(15001, "grpc")},
-	//	},
-	//}
-
-	//log.Infof("InstancesByPort hostname=%+v port=%d labels=%+v", hostname, port, labels)
 	return nil, nil
 }
 
@@ -185,19 +160,6 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, port int,
 func (c *Controller) GetProxyServiceInstances(node *model.Proxy) ([]*model.ServiceInstance, error) {
 	log.Infof("GetProxyServiceInstances node=%+v", node)
 	return nil, nil
-
-	instances := make([]*model.ServiceInstance, 1)
-
-	instances[0] = &model.ServiceInstance{
-		Service: &model.Service{
-			Hostname: model.Hostname("hello_server"),
-			Address:  "127.0.0.1",
-			Ports:    model.PortList{convertPort(15001, "grpc")},
-		},
-		//Labels: convertLabels([]string{"version|v1"}),
-	}
-
-	return instances, nil
 }
 
 // Run all controllers until a signal is received
