@@ -634,6 +634,7 @@ func (store *istioConfigStore) VirtualServices(gateways map[string]bool) []Confi
 		// resolve top level hosts
 		for i, h := range rule.Hosts {
 			rule.Hosts[i] = ResolveShortnameToFQDN(h, r.ConfigMeta).String()
+			fmt.Printf("$$$$$$$$$$$$$$rule.Hosts[i]=%s\n",rule.Hosts[i])
 		}
 		// resolve gateways to bind to
 		for i, g := range rule.Gateways {
@@ -652,6 +653,7 @@ func (store *istioConfigStore) VirtualServices(gateways map[string]bool) []Confi
 			}
 			for _, w := range d.Route {
 				w.Destination.Host = ResolveShortnameToFQDN(w.Destination.Host, r.ConfigMeta).String()
+				fmt.Printf("$$$$$$$$$$$$$$w.Destination.Host=%s\n",w.Destination.Host)
 			}
 			if d.Mirror != nil {
 				d.Mirror.Host = ResolveShortnameToFQDN(d.Mirror.Host, r.ConfigMeta).String()
@@ -751,6 +753,7 @@ func (store *istioConfigStore) DestinationRule(hostname Hostname) *Config {
 	for i := range configs {
 		rule := configs[i].Spec.(*networking.DestinationRule)
 		hosts[i] = ResolveShortnameToFQDN(rule.Host, configs[i].ConfigMeta)
+		fmt.Printf("$$$$$$$$$$$$$$$$hosts=%s\n",hosts[i])
 		byHosts[hosts[i]] = &configs[i]
 	}
 

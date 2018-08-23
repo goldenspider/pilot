@@ -156,6 +156,26 @@ func convertProtocol(name string) model.Protocol {
 	return protocol
 }
 
+// parseHostname extracts service name and namespace from the service hostname
+func parseHostname(hostname model.Hostname) (name, namespace string) {
+	parts := strings.Split(hostname.String(), ".")
+	if len(parts) < 2 {
+		name = parts[0]
+		namespace = ""
+		return
+	}
+	name = parts[0]
+	namespace = parts[1]
+	return
+}
+
+func KeyFunc(name, namespace string) string {
+	if len(namespace) == 0 {
+		return name
+	}
+	return namespace + "/" + name
+}
+
 // ParseInputs reads multiple documents from `kubectl` output and checks with
 // the schema. It also returns the list of unrecognized kinds as the second
 // response.

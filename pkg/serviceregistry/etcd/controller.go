@@ -48,12 +48,11 @@ func NewController(client *Client) *Controller {
 // Services list declarations of all services in the system
 func (c *Controller) Services() ([]*model.Service, error) {
 	log.Info("Services")
-	services := make([]*model.Service, 1)
-	services[0] = &model.Service{
-		Hostname: model.Hostname("hello_server"),
-		Ports:    model.PortList{convertPort(15001, "grpc")},
+	var svcs []*model.Service
+	for _, svc := range Services {
+		svcs = append(svcs, convertService(svc))
 	}
-	return services, nil
+	return svcs, nil
 }
 
 // GetService retrieves a service by host name if it exists
@@ -73,8 +72,6 @@ func (c *Controller) GetServiceAttributes(hostname model.Hostname) (*model.Servi
 // might revisit this function.
 func (c *Controller) ManagementPorts(addr string) model.PortList {
 	log.Infof("ManagementPorts addr=%s", addr)
-	//portList := model.PortList{&model.Port{Port: 15001}}
-
 	return nil
 }
 
@@ -95,65 +92,58 @@ func (c *Controller) Instances(hostname model.Hostname, ports []string,
 
 // InstancesByPort retrieves instances for a service that match
 // any of the supplied labels. All instances match an empty tag list.
-func (c *Controller) InstancesByPort(hostname model.Hostname, port int,
-	labels model.LabelsCollection) ([]*model.ServiceInstance, error) {
+func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
+	labelsList model.LabelsCollection) ([]*model.ServiceInstance, error) {
+	fmt.Printf("InstancesByPort hostname=%s reqSvcPort=%d labelsList=%s", hostname, reqSvcPort, labelsList)
+	name, namespace := parseHostname(hostname)
 
-	fmt.Printf("host %s port %d labels=%s\n", hostname, port, labels)
-	if len(labels) == 0 {
-		fmt.Println("hit V0 label\n")
-		instances := make([]*model.ServiceInstance, 1)
-
-		instances[0] = &model.ServiceInstance{
-			Endpoint: model.NetworkEndpoint{Address: "192.168.170.137",
-				Port:        50051,
-				ServicePort: convertPort(15001, "grpc"),
-			},
-
-			Service: &model.Service{
-				Hostname: model.Hostname("hello_server"),
-				Ports:    model.PortList{convertPort(15001, "grpc")},
-			},
+	var service *Service
+	for _, svc := range Services {
+		if name == svc.Name && namespace == svc.Namespace {
+			service = svc
+			break
 		}
-		return instances, nil
 	}
 
-	if labels[0].String() == "version=v1" {
-		fmt.Printf("hit V1 label:%s\n", labels[0].String())
-		instances := make([]*model.ServiceInstance, 1)
-
-		instances[0] = &model.ServiceInstance{
-			Endpoint: model.NetworkEndpoint{Address: "192.168.170.137",
-				Port:        50051,
-				ServicePort: convertPort(15001, "grpc"),
-			},
-
-			Service: &model.Service{
-				Hostname: model.Hostname("hello_server"),
-				Ports:    model.PortList{convertPort(15001, "grpc")},
-			},
-			Labels: convertLabels([]string{"version|v1"}),
-		}
-		return instances, nil
-	} else {
-		fmt.Printf("hit V2 label:%s\n", labels[0].String())
-		instances := make([]*model.ServiceInstance, 1)
-
-		instances[0] = &model.ServiceInstance{
-			Endpoint: model.NetworkEndpoint{Address: "192.168.170.1",
-				Port:        50051,
-				ServicePort: convertPort(15001, "grpc"),
-			},
-
-			Service: &model.Service{
-				Hostname: model.Hostname("hello_server"),
-				Ports:    model.PortList{convertPort(15001, "grpc")},
-			},
-			Labels: convertLabels([]string{"version|v2"}),
-		}
-		return instances, nil
+	if service == nil {
+		return nil, fmt.Errorf("no found service . name=%s namespace=%s", name, namespace)
 	}
 
-	return nil, nil
+	svc := convertService(service)
+
+	svcPortEntry, exists := svc.Ports.GetByPort(reqSvcPort)
+	if !exists && reqSvcPort != 0 {
+		return nil, fmt.Errorf("no found svcPortEntry . reqSvcPort=%d", reqSvcPort)
+	}
+
+	var out []*model.ServiceInstance
+	for _, ep := range Endpoints {
+		if ep.Name == name && ep.Namespace == namespace {
+			node := getNode(ep.NodeName)
+			if node == nil {
+				return nil, fmt.Errorf("no found node. nodeName=%s", ep.NodeName)
+			}
+			if !labelsList.HasSubsetOf(node.Labels) {
+				continue
+			}
+			// identify the port by name. K8S EndpointPort uses the service port name
+			for _, port := range ep.Ports {
+				if svcPortEntry.Name == port.Name {
+					out = append(out, &model.ServiceInstance{
+						Endpoint: model.NetworkEndpoint{
+							Address:     node.Ip,
+							Port:        int(port.Port),
+							ServicePort: svcPortEntry,
+						},
+						Service:          svc,
+						Labels:           node.Labels,
+						AvailabilityZone: node.Az,
+					})
+				}
+			}
+		}
+	}
+	return out, nil
 }
 
 // GetProxyServiceInstances lists service instances co-located with a given proxy

@@ -209,14 +209,3 @@ func (c *Client) DeleteConfig(typ, name, namespace string) error {
 	glog.Infof("delete config, key = %s", key)
 	return nil
 }
-
-// parseHostname extracts service name from the service hostname
-func parseHostname(hostname string) (name string, err error) {
-	parts := strings.Split(hostname, ".")
-	if len(parts) < 1 || parts[0] == "" {
-		err = fmt.Errorf("missing service name from the service hostname %q", hostname)
-		return
-	}
-	name = parts[0]
-	return
-}

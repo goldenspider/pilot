@@ -140,50 +140,12 @@ func (c *configStoreCache) Get(typ, name, namespace string) (config *model.Confi
 	return
 }
 
-var data string = `kind: VirtualService
-metadata:
-  name: hello_server
-spec:
-  hosts:
-  - hello_server
-  http:
-  - match:
-    - uri:
-        prefix: "/hello"
-    route:
-    - destination:
-        host: hello_server
-        subset: v1
-      weight: 90
-    - destination:
-        host: hello_server
-        subset: v2
-      weight: 10
-`
-
-var data1 string = `kind: DestinationRule
-metadata:
-  name: hello_server
-spec:
-  host: hello_server
-  trafficPolicy:
-    loadBalancer:
-      simple: ROUND_ROBIN
-  subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
-`
-
 // List returns objects by type and namespace.
 // Use "" for the namespace to list across namespaces.
 func (c *configStoreCache) List(typ, namespace string) ([]model.Config, error) {
-	glog.Infof("List typ=%s", typ)
-	if typ == "virtual-service" {
-		varr, err := ParseInputs(data)
+	glog.Infof("List typ=%s namespace=%s", typ, namespace)
+	if typ == model.VirtualService.Type {
+		varr, err := ParseInputs(vsdata)
 		if err != nil || len(varr) == 0 {
 			fmt.Printf("ParseInputs(correct input) => got %v, %v", varr, err)
 		}
@@ -191,8 +153,8 @@ func (c *configStoreCache) List(typ, namespace string) ([]model.Config, error) {
 		return varr, nil
 	}
 
-	if typ == "destination-rule" {
-		varr, err := ParseInputs(data1)
+	if typ == model.DestinationRule.Type {
+		varr, err := ParseInputs(drdata)
 		if err != nil || len(varr) == 0 {
 			fmt.Printf("ParseInputs(correct input) => got %v, %v", varr, err)
 		}
