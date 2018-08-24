@@ -1,0 +1,40 @@
+Administrator@USER-20171129KU MINGW64 /d/work/src/pilot/cmd/etcdclient (master)
+$ ./etcdclient.exe
+2018-08-24T10:00:16.282012Z     info    parsed scheme: ""
+2018-08-24T10:00:16.282012Z     info    scheme "" not registered, fallback to default scheme
+2018-08-24T10:00:16.283012Z     info    put service, service = &etcd.Service{Name:"hello_server", Namespace:"ns-a", ClusterIP:"", MeshExternal:false, Ports:[]*etcd.Port{(*etcd.Port)(0x1d822e0)}, CreationTimestamp:"2018-08-24 18:00:16.2820123", XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
+2018-08-24T10:00:16.283012Z     info    ccResolverWrapper: sending new addresses to cc: [{127.0.0.1:2379 0  <nil>}]
+2018-08-24T10:00:16.283012Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-08-24T10:00:16.286012Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-08-24T10:00:16.288012Z     info    put service, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 2018-08-24T18:00:16.2820123Z
+%!(EXTRA *model.Service=&{hello_server.ns-a 0.0.0.0 map[] [0xc0421ec720]  [] false false 0 2018-08-24 18:00:16.2820123 +0000 UTC})
+2018-08-24T10:00:16.288012Z     info    put service, service = &etcd.Service{Name:"hello_server_alpha", Namespace:"ns-a", ClusterIP:"", MeshExternal:false, Ports:[]*etcd.Port{(*etcd.Port)(0x1d82340)}, CreationTimestamp:"2018-08-24 18:00:16.2820123", XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
+2018-08-24T10:00:16.290012Z     info    put service, key = /pilot/services/hello_server_alpha.ns-a, value = hostname: hello_server_alpha.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 2018-08-24T18:00:16.2820123Z
+%!(EXTRA *model.Service=&{hello_server_alpha.ns-a 0.0.0.0 map[] [0xc042344c90]  [] false false 0 2018-08-24 18:00:16.2820123 +0000 UTC})
+

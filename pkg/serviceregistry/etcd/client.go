@@ -94,6 +94,7 @@ func (c *Client) splitOnlineKey(key string) (string, string, string, bool) {
 
 func (c *Client) GetServiceNames() ([]string, error) {
 	key := c.servicePrefix()
+	glog.Infof("key=%s", key)
 	ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
 	defer cancel()
 	rsp, err := c.Get(ctx, key, clientv3.WithPrefix(), clientv3.WithKeysOnly())
@@ -102,8 +103,10 @@ func (c *Client) GetServiceNames() ([]string, error) {
 		return nil, err
 	}
 
+	glog.Infof("rsp=%+v", *rsp)
 	services := make([]string, 0, len(rsp.Kvs))
 	for _, kv := range rsp.Kvs {
+		glog.Infof("kv =%+v", *kv)
 		name := strings.TrimPrefix(string(kv.Key), key)
 		if -1 == strings.Index(name, "/") {
 			services = append(services, name)
@@ -111,6 +114,33 @@ func (c *Client) GetServiceNames() ([]string, error) {
 	}
 	glog.Infof("get service names : %v", services)
 	return services, nil
+}
+
+// GetService retrieves a service by host name if it exists
+func (c *Client) GetService(hostname string) (*model.Service, error) {
+	glog.Infof("get services, hostname = %s", hostname)
+	// Get actual service by name
+	//name, namespace := parseHostname(hostname)
+
+	key := c.serviceKey(hostname)
+	ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
+	defer cancel()
+	rsp, err := c.Get(ctx, key)
+	if err != nil || 0 == len(rsp.Kvs) {
+		glog.Errorf("failed to get services. key = %s, error = %v", key, err)
+		return nil, err
+	}
+
+	kv := rsp.Kvs[0]
+	obj, err := UnmarshalServiceFromYAML(kv.Value)
+	if err != nil {
+		glog.Errorf("failed to parse service. key = %s, value = %s, error = %v",
+			string(kv.Key), string(kv.Value), err)
+		return nil, err
+	}
+	glog.Infof("get services, hostname = %s, key = %s, value = %s, service = %#v ",
+		hostname, key, string(kv.Value), obj)
+	return obj, nil
 }
 
 func (c *Client) DeleteService(service string) error {

@@ -22,6 +22,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/prometheus/common/log"
 	"istio.io/istio/pilot/pkg/model"
+	pb "pilot/pkg/proto/etcd"
 )
 
 type InstanceHandler = func(*model.ServiceInstance, model.Event)
@@ -48,11 +49,25 @@ func NewController(client *Client) *Controller {
 // Services list declarations of all services in the system
 func (c *Controller) Services() ([]*model.Service, error) {
 	log.Info("Services")
-	var svcs []*model.Service
-	for _, svc := range Services {
-		svcs = append(svcs, convertService(svc))
+	//var svcs []*model.Service
+	//for _, svc := range Services {
+	//	svcs = append(svcs, convertService(svc))
+	//}
+
+	names, err := c.client.GetServiceNames()
+	if err != nil {
+		return nil, err
 	}
-	return svcs, nil
+
+	services := make([]*model.Service, 0, len(names))
+	for _, name := range names {
+		service, err := c.client.GetService(name)
+		if err != nil {
+			return nil, err
+		}
+		services = append(services, service)
+	}
+	return services, nil
 }
 
 // GetService retrieves a service by host name if it exists
@@ -97,7 +112,7 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 	fmt.Printf("InstancesByPort hostname=%s reqSvcPort=%d labelsList=%s", hostname, reqSvcPort, labelsList)
 	name, namespace := parseHostname(hostname)
 
-	var service *Service
+	var service *pb.Service
 	for _, svc := range Services {
 		if name == svc.Name && namespace == svc.Namespace {
 			service = svc
@@ -109,7 +124,7 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 		return nil, fmt.Errorf("no found service . name=%s namespace=%s", name, namespace)
 	}
 
-	svc := convertService(service)
+	svc := ConvertService(service)
 
 	svcPortEntry, exists := svc.Ports.GetByPort(reqSvcPort)
 	if !exists && reqSvcPort != 0 {

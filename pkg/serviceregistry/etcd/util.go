@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 	"gopkg.in/yaml.v2"
 	"istio.io/istio/pilot/pkg/config/kube/crd"
+	pb "pilot/pkg/proto/etcd"
 	"time"
 )
 
@@ -41,27 +42,41 @@ type (
 )
 
 // for test
-var Services []*Service = []*Service{
-	&Service{
+var Services []*pb.Service = []*pb.Service{
+	&pb.Service{
 		Name:      "hello_server",
 		Namespace: "ns-a",
-		Ports:     model.PortList{convertPort(15001, "grpc")},
+		Ports: []*pb.Port{
+			{
+				Name:     "grpc",
+				Port:     15001,
+				Protocol: string(convertProtocol("grpc")),
+			},
+		},
+		CreationTimestamp: time.Now().Format("2006-01-02 15:04:05.999999999"),
 	},
-	&Service{
+	&pb.Service{
 		Name:      "hello_server_alpha",
 		Namespace: "ns-a",
-		Ports:     model.PortList{convertPort(15001, "grpc")},
+		Ports: []*pb.Port{
+			{
+				Name:     "grpc",
+				Port:     15001,
+				Protocol: string(convertProtocol("grpc")),
+			},
+		},
+		CreationTimestamp: time.Now().Format("2006-01-02 15:04:05.999999999"),
 	},
 }
 
-var Nodes []*Node = []*Node{
-	&Node{
+var Nodes []*pb.Node = []*pb.Node{
+	&pb.Node{
 		NodeName: "192-168-170-138",
 		Ip:       "192.168.170.138",
 		Az:       "sh02",
 		Labels:   map[string]string{"version": "v1"},
 	},
-	&Node{
+	&pb.Node{
 		NodeName: "192-168-170-1",
 		Ip:       "192.168.170.1",
 		Az:       "sh02",
@@ -69,24 +84,42 @@ var Nodes []*Node = []*Node{
 	},
 }
 
-var Endpoints []Endpoint = []Endpoint{
+var Endpoints []pb.Endpoint = []pb.Endpoint{
 	{
 		Name:      "hello_server",
 		Namespace: "ns-a",
 		NodeName:  "192-168-170-138",
-		Ports:     model.PortList{convertPort(50051, "grpc")},
+		Ports: []*pb.Port{
+			{
+				Name:     "grpc",
+				Port:     50051,
+				Protocol: string(convertProtocol("grpc")),
+			},
+		},
 	},
 	{
 		Name:      "hello_server",
 		Namespace: "ns-a",
 		NodeName:  "192-168-170-1",
-		Ports:     model.PortList{convertPort(50051, "grpc")},
+		Ports: []*pb.Port{
+			{
+				Name:     "grpc",
+				Port:     50051,
+				Protocol: string(convertProtocol("grpc")),
+			},
+		},
 	},
 	{
 		Name:      "hello_server_alpha",
 		Namespace: "ns-a",
 		NodeName:  "192-168-170-138",
-		Ports:     model.PortList{convertPort(50052, "grpc")},
+		Ports: []*pb.Port{
+			{
+				Name:     "grpc",
+				Port:     50052,
+				Protocol: string(convertProtocol("grpc")),
+			},
+		},
 	},
 }
 
@@ -162,7 +195,7 @@ spec:
       version: v1
 `
 
-func convertService(svc *Service) *model.Service {
+func ConvertService(svc *pb.Service) *model.Service {
 	addr := model.UnspecifiedIP
 	if svc.ClusterIP != "" && svc.ClusterIP != ClusterIPNone {
 		addr = svc.ClusterIP
@@ -178,20 +211,21 @@ func convertService(svc *Service) *model.Service {
 
 	ports := make([]*model.Port, 0, len(svc.Ports))
 	for _, port := range svc.Ports {
-		ports = append(ports, convertPort(port.Port, port.Name))
+		ports = append(ports, convertPort(int(port.Port), port.Name))
 	}
 
+	time, _ := time.Parse("2006-01-02 15:04:05.999999999", svc.CreationTimestamp)
 	return &model.Service{
 		Hostname:     serviceHostname(svc.Name, svc.Namespace),
 		Ports:        ports,
 		Address:      addr,
 		MeshExternal: meshExternal,
 		Resolution:   resolution,
-		CreationTime: svc.CreationTimestamp,
+		CreationTime: time,
 	}
 }
 
-func getNode(nodeName string) *Node {
+func getNode(nodeName string) *pb.Node {
 	for _, node := range Nodes {
 		if node.NodeName == nodeName {
 			return node
@@ -272,11 +306,7 @@ func UnmarshalConfigFromYAML(bytes []byte) (*model.Config, error) {
 	return config, nil
 }
 
-func ConvertFromServiceObject(obj *ServiceObject) *model.Service {
-	return &obj.Service
-}
-
-func MarshalServiceToYAML(obj *ServiceObject) ([]byte, error) {
+func MarshalServiceToYAML(obj *model.Service) ([]byte, error) {
 	bytes, err := yaml.Marshal(obj)
 	if err != nil {
 		return nil, multierror.Prefix(err, "marshal error:")
@@ -284,8 +314,8 @@ func MarshalServiceToYAML(obj *ServiceObject) ([]byte, error) {
 	return bytes, nil
 }
 
-func UnmarshalServiceFromYAML(bytes []byte) (*ServiceObject, error) {
-	obj := &ServiceObject{}
+func UnmarshalServiceFromYAML(bytes []byte) (*model.Service, error) {
+	obj := &model.Service{}
 	if err := yaml.Unmarshal(bytes, obj); err != nil {
 		return nil, multierror.Prefix(err, "marshal error:")
 	}

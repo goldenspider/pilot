@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package etcd;
+
+message Service {
+ string Name = 1;
+ string Namespace = 2;
+ string ClusterIP = 3;
+ bool MeshExternal = 4;
+ repeated
+ Port Ports  = 5;
+ string CreationTimestamp = 6; //time.Now().Format("2006-01-02 15:04:05.999999999")
+}
+
+message Port {
+ string Name = 1;
+ uint32 Port = 2;
+ string Protocol = 3;
+}
+
+message Node {
+ string NodeName = 1;
+ string Ip = 2;
+ string Az = 3;
+ map<string,string> Labels = 4;
+}
+
+message Endpoint {
+ string Name = 1; //service name
+ string Namespace = 2; //service Namespace
+ string NodeName = 3;
+ repeated
+ Port Ports  = 4;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
