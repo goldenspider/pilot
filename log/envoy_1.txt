@@ -1,0 +1,1154 @@
+spider@lv:~/test$ docker-compose up
+Recreating envoy_1.7.0_test ... done
+Attaching to envoy_1.7.0_test
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:190] initializing epoch 0 (hot restart version=10.200.16384.127.options=capacity=16384, num_slots=8209 hash=228984379728933363 size=2654312)
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:192] statically linked extensions:
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:194]   access_loggers: envoy.file_access_log,envoy.http_grpc_access_log
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:197]   filters.http: envoy.buffer,envoy.cors,envoy.ext_authz,envoy.fault,envoy.filters.http.header_to_metadata,envoy.filters.http.jwt_authn,envoy.filters.http.rbac,envoy.grpc_http1_bridge,envoy.grpc_json_transcoder,envoy.grpc_web,envoy.gzip,envoy.health_check,envoy.http_dynamo_filter,envoy.ip_tagging,envoy.lua,envoy.rate_limit,envoy.router,envoy.squash
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:200]   filters.listener: envoy.listener.original_dst,envoy.listener.proxy_protocol,envoy.listener.tls_inspector
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:203]   filters.network: envoy.client_ssl_auth,envoy.echo,envoy.ext_authz,envoy.filters.network.rbac,envoy.filters.network.thrift_proxy,envoy.http_connection_manager,envoy.mongo_proxy,envoy.ratelimit,envoy.redis_proxy,envoy.tcp_proxy
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:205]   stat_sinks: envoy.dog_statsd,envoy.metrics_service,envoy.stat_sinks.hystrix,envoy.statsd
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:207]   tracers: envoy.dynamic.ot,envoy.lightstep,envoy.zipkin
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:210]   transport_sockets.downstream: envoy.transport_sockets.capture,raw_buffer,tls
+envoy_1.7.0_test | [2018-08-24 06:36:59.740][1][info][main] source/server/server.cc:213]   transport_sockets.upstream: envoy.transport_sockets.capture,raw_buffer,tls
+envoy_1.7.0_test | [2018-08-24 06:36:59.747][1][debug][main] source/server/server.cc:241] admin address: 127.0.0.1:9901
+envoy_1.7.0_test | [2018-08-24 06:36:59.749][1][info][config] source/server/configuration_impl.cc:50] loading 0 static secret(s)
+envoy_1.7.0_test | [2018-08-24 06:36:59.755][11][debug][grpc] source/common/grpc/google_async_client_impl.cc:41] completionThread running
+envoy_1.7.0_test | [2018-08-24 06:36:59.755][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.759][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.759][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=ads_cluster primary=0 secondary=0
+envoy_1.7.0_test | [2018-08-24 06:36:59.759][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=ads_cluster primary=0 secondary=0
+envoy_1.7.0_test | [2018-08-24 06:36:59.759][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:130] cm init: initializing cds
+envoy_1.7.0_test | [2018-08-24 06:36:59.759][1][debug][upstream] source/common/config/grpc_mux_impl.cc:106] gRPC mux subscribe for type.googleapis.com/envoy.api.v2.Cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.759][1][debug][upstream] source/common/config/grpc_mux_impl.cc:54] No stream available to sendDiscoveryRequest for type.googleapis.com/envoy.api.v2.Cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.760][1][debug][upstream] source/common/config/grpc_mux_impl.cc:39] Establishing new gRPC bidi stream for rpc StreamAggregatedResources(stream .envoy.api.v2.DiscoveryRequest) returns (stream .envoy.api.v2.DiscoveryResponse);
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:36:59.760][1][debug][router] source/common/router/router.cc:252] [C0][S4026724237557515071] cluster 'ads_cluster' match for URL '/envoy.service.discovery.v2.AggregatedDiscoveryService/StreamAggregatedResources'
+envoy_1.7.0_test | [2018-08-24 06:36:59.760][1][debug][router] source/common/router/router.cc:303] [C0][S4026724237557515071] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':path', '/envoy.service.discovery.v2.AggregatedDiscoveryService/StreamAggregatedResources'
+envoy_1.7.0_test | ':authority', 'ads_cluster'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-internal', 'true'
+envoy_1.7.0_test | 'x-forwarded-for', '192.168.170.138'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][client] source/common/http/codec_client.cc:25] [C0] connecting
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][connection] source/common/network/connection_impl.cc:572] [C0] connecting to 192.168.170.1:15010
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][connection] source/common/network/connection_impl.cc:581] [C0] connection in progress
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][http2] source/common/http/http2/codec_impl.cc:621] [C0] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][http2] source/common/http/http2/codec_impl.cc:643] [C0] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][pool] source/common/http/http2/conn_pool.cc:97] [C0] creating stream
+envoy_1.7.0_test | [2018-08-24 06:36:59.761][1][debug][router] source/common/router/router.cc:971] [C0][S4026724237557515071] pool ready
+envoy_1.7.0_test | [2018-08-24 06:36:59.762][1][info][config] source/server/configuration_impl.cc:60] loading 0 listener(s)
+envoy_1.7.0_test | [2018-08-24 06:36:59.762][1][info][config] source/server/configuration_impl.cc:94] loading tracing configuration
+envoy_1.7.0_test | [2018-08-24 06:36:59.762][1][info][config] source/server/configuration_impl.cc:116] loading stats sink configuration
+envoy_1.7.0_test | [2018-08-24 06:36:59.762][1][info][main] source/server/server.cc:432] starting main dispatch loop
+envoy_1.7.0_test | [2018-08-24 06:36:59.762][1][debug][connection] source/common/network/connection_impl.cc:466] [C0] connected
+envoy_1.7.0_test | [2018-08-24 06:36:59.762][1][debug][client] source/common/http/codec_client.cc:63] [C0] connected
+envoy_1.7.0_test | [2018-08-24 06:36:59.771][1][debug][router] source/common/router/router.cc:583] [C0][S4026724237557515071] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:36:59.772][1][debug][http] source/common/http/async_client_impl.cc:93] async http request response headers (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:36:59.772][1][debug][upstream] source/common/config/grpc_mux_impl.cc:166] Received gRPC message for type.googleapis.com/envoy.api.v2.Cluster at version 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.772][1][debug][upstream] source/common/config/grpc_mux_impl.cc:133] Pausing discovery requests for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+envoy_1.7.0_test | [2018-08-24 06:36:59.772][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:494] add/update cluster outbound|15001||hello_server.ns-a during init
+envoy_1.7.0_test | [2018-08-24 06:36:59.773][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:532] adding TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.773][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=outbound|15001||hello_server.ns-a primary=0 secondary=1
+envoy_1.7.0_test | [2018-08-24 06:36:59.773][1][debug][upstream] source/common/upstream/cds_api_impl.cc:68] cds: add/update cluster 'outbound|15001||hello_server.ns-a'
+envoy_1.7.0_test | [2018-08-24 06:36:59.774][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:494] add/update cluster outbound|15001||hello_server_alpha.ns-a during init
+envoy_1.7.0_test | [2018-08-24 06:36:59.774][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:532] adding TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.774][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=outbound|15001||hello_server_alpha.ns-a primary=0 secondary=2
+envoy_1.7.0_test | [2018-08-24 06:36:59.774][1][debug][upstream] source/common/upstream/cds_api_impl.cc:68] cds: add/update cluster 'outbound|15001||hello_server_alpha.ns-a'
+envoy_1.7.0_test | [2018-08-24 06:36:59.775][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:494] add/update cluster outbound|15001|v1|hello_server_alpha.ns-a during init
+envoy_1.7.0_test | [2018-08-24 06:36:59.775][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:532] adding TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.775][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=outbound|15001|v1|hello_server_alpha.ns-a primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][debug][upstream] source/common/upstream/cds_api_impl.cc:68] cds: add/update cluster 'outbound|15001|v1|hello_server_alpha.ns-a'
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:494] add/update cluster inbound|3333||mgmtCluster during init
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:532] adding TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=inbound|3333||mgmtCluster primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=inbound|3333||mgmtCluster primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.776][1][debug][upstream] source/common/upstream/cds_api_impl.cc:68] cds: add/update cluster 'inbound|3333||mgmtCluster'
+envoy_1.7.0_test | [2018-08-24 06:36:59.777][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:494] add/update cluster inbound|9999||mgmtCluster during init
+envoy_1.7.0_test | [2018-08-24 06:36:59.777][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:532] adding TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=inbound|9999||mgmtCluster primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=inbound|9999||mgmtCluster primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cds_api_impl.cc:68] cds: add/update cluster 'inbound|9999||mgmtCluster'
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:494] add/update cluster BlackHoleCluster during init
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:532] adding TLS cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=BlackHoleCluster primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:62] cm init: adding: cluster=BlackHoleCluster primary=0 secondary=3
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/upstream/cds_api_impl.cc:68] cds: add/update cluster 'BlackHoleCluster'
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:111] cm init: initializing secondary clusters
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/config/grpc_mux_impl.cc:106] gRPC mux subscribe for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/config/grpc_mux_impl.cc:106] gRPC mux subscribe for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/config/grpc_mux_impl.cc:106] gRPC mux subscribe for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][upstream] source/common/config/grpc_mux_impl.cc:141] Resuming discovery requests for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+envoy_1.7.0_test | [2018-08-24 06:36:59.778][1][debug][config] bazel-out/k8-opt/bin/source/common/config/_virtual_includes/grpc_mux_subscription_lib/common/config/grpc_mux_subscription_impl.h:60] gRPC config for type.googleapis.com/envoy.api.v2.Cluster accepted with 6 resources: [name: "outbound|15001||hello_server.ns-a"
+envoy_1.7.0_test | type: EDS
+envoy_1.7.0_test | eds_cluster_config {
+envoy_1.7.0_test |   eds_config {
+envoy_1.7.0_test |     ads {
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   service_name: "outbound|15001||hello_server.ns-a"
+envoy_1.7.0_test | }
+envoy_1.7.0_test | connect_timeout {
+envoy_1.7.0_test |   seconds: 1
+envoy_1.7.0_test | }
+envoy_1.7.0_test | circuit_breakers {
+envoy_1.7.0_test |   thresholds {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | http2_protocol_options {
+envoy_1.7.0_test |   max_concurrent_streams {
+envoy_1.7.0_test |     value: 1073741824
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "outbound|15001||hello_server_alpha.ns-a"
+envoy_1.7.0_test | type: EDS
+envoy_1.7.0_test | eds_cluster_config {
+envoy_1.7.0_test |   eds_config {
+envoy_1.7.0_test |     ads {
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   service_name: "outbound|15001||hello_server_alpha.ns-a"
+envoy_1.7.0_test | }
+envoy_1.7.0_test | connect_timeout {
+envoy_1.7.0_test |   seconds: 1
+envoy_1.7.0_test | }
+envoy_1.7.0_test | circuit_breakers {
+envoy_1.7.0_test |   thresholds {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | http2_protocol_options {
+envoy_1.7.0_test |   max_concurrent_streams {
+envoy_1.7.0_test |     value: 1073741824
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "outbound|15001|v1|hello_server_alpha.ns-a"
+envoy_1.7.0_test | type: EDS
+envoy_1.7.0_test | eds_cluster_config {
+envoy_1.7.0_test |   eds_config {
+envoy_1.7.0_test |     ads {
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   service_name: "outbound|15001|v1|hello_server_alpha.ns-a"
+envoy_1.7.0_test | }
+envoy_1.7.0_test | connect_timeout {
+envoy_1.7.0_test |   seconds: 1
+envoy_1.7.0_test | }
+envoy_1.7.0_test | circuit_breakers {
+envoy_1.7.0_test |   thresholds {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | http2_protocol_options {
+envoy_1.7.0_test |   max_concurrent_streams {
+envoy_1.7.0_test |     value: 1073741824
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "inbound|3333||mgmtCluster"
+envoy_1.7.0_test | connect_timeout {
+envoy_1.7.0_test |   seconds: 1
+envoy_1.7.0_test | }
+envoy_1.7.0_test | hosts {
+envoy_1.7.0_test |   socket_address {
+envoy_1.7.0_test |     address: "127.0.0.1"
+envoy_1.7.0_test |     port_value: 3333
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | circuit_breakers {
+envoy_1.7.0_test |   thresholds {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "inbound|9999||mgmtCluster"
+envoy_1.7.0_test | connect_timeout {
+envoy_1.7.0_test |   seconds: 1
+envoy_1.7.0_test | }
+envoy_1.7.0_test | hosts {
+envoy_1.7.0_test |   socket_address {
+envoy_1.7.0_test |     address: "127.0.0.1"
+envoy_1.7.0_test |     port_value: 9999
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | circuit_breakers {
+envoy_1.7.0_test |   thresholds {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "BlackHoleCluster"
+envoy_1.7.0_test | connect_timeout {
+envoy_1.7.0_test |   seconds: 5
+envoy_1.7.0_test | }
+envoy_1.7.0_test | ]
+envoy_1.7.0_test | [2018-08-24 06:36:59.782][1][debug][upstream] source/common/config/grpc_mux_impl.cc:166] Received gRPC message for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment at version 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.782][1][debug][upstream] source/common/upstream/eds.cc:156] EDS hosts or locality weights changed for cluster: outbound|15001|v1|hello_server_alpha.ns-a (0) priority 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.782][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.782][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=outbound|15001|v1|hello_server_alpha.ns-a primary=0 secondary=2
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][config] bazel-out/k8-opt/bin/source/common/config/_virtual_includes/grpc_mux_subscription_lib/common/config/grpc_mux_subscription_impl.h:60] gRPC config for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment accepted with 1 resources: [cluster_name: "outbound|15001|v1|hello_server_alpha.ns-a"
+envoy_1.7.0_test | endpoints {
+envoy_1.7.0_test |   locality {
+envoy_1.7.0_test |     zone: "sh02"
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   lb_endpoints {
+envoy_1.7.0_test |     endpoint {
+envoy_1.7.0_test |       address {
+envoy_1.7.0_test |         socket_address {
+envoy_1.7.0_test |           address: "192.168.170.138"
+envoy_1.7.0_test |           port_value: 50052
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | ]
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/upstream/eds.cc:156] EDS hosts or locality weights changed for cluster: outbound|15001||hello_server_alpha.ns-a (0) priority 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=outbound|15001||hello_server_alpha.ns-a primary=0 secondary=1
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][config] bazel-out/k8-opt/bin/source/common/config/_virtual_includes/grpc_mux_subscription_lib/common/config/grpc_mux_subscription_impl.h:60] gRPC config for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment accepted with 1 resources: [cluster_name: "outbound|15001||hello_server_alpha.ns-a"
+envoy_1.7.0_test | endpoints {
+envoy_1.7.0_test |   locality {
+envoy_1.7.0_test |     zone: "sh02"
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   lb_endpoints {
+envoy_1.7.0_test |     endpoint {
+envoy_1.7.0_test |       address {
+envoy_1.7.0_test |         socket_address {
+envoy_1.7.0_test |           address: "192.168.170.138"
+envoy_1.7.0_test |           port_value: 50052
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | ]
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/upstream/eds.cc:156] EDS hosts or locality weights changed for cluster: outbound|15001||hello_server.ns-a (0) priority 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/upstream/cluster_manager_impl.cc:90] cm init: init complete: cluster=outbound|15001||hello_server.ns-a primary=0 secondary=0
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][info][upstream] source/common/upstream/cluster_manager_impl.cc:134] cm init: all clusters initialized
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/config/grpc_mux_impl.cc:133] Pausing discovery requests for type.googleapis.com/envoy.api.v2.RouteConfiguration
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][info][main] source/server/server.cc:401] all clusters initialized. initializing init manager
+envoy_1.7.0_test | [2018-08-24 06:36:59.783][1][debug][upstream] source/common/config/grpc_mux_impl.cc:106] gRPC mux subscribe for type.googleapis.com/envoy.api.v2.Listener
+envoy_1.7.0_test | [2018-08-24 06:36:59.784][1][debug][upstream] source/common/config/grpc_mux_impl.cc:141] Resuming discovery requests for type.googleapis.com/envoy.api.v2.RouteConfiguration
+envoy_1.7.0_test | [2018-08-24 06:36:59.784][1][debug][config] bazel-out/k8-opt/bin/source/common/config/_virtual_includes/grpc_mux_subscription_lib/common/config/grpc_mux_subscription_impl.h:60] gRPC config for type.googleapis.com/envoy.api.v2.ClusterLoadAssignment accepted with 1 resources: [cluster_name: "outbound|15001||hello_server.ns-a"
+envoy_1.7.0_test | endpoints {
+envoy_1.7.0_test |   locality {
+envoy_1.7.0_test |     zone: "sh02"
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   lb_endpoints {
+envoy_1.7.0_test |     endpoint {
+envoy_1.7.0_test |       address {
+envoy_1.7.0_test |         socket_address {
+envoy_1.7.0_test |           address: "192.168.170.138"
+envoy_1.7.0_test |           port_value: 50051
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test |   lb_endpoints {
+envoy_1.7.0_test |     endpoint {
+envoy_1.7.0_test |       address {
+envoy_1.7.0_test |         socket_address {
+envoy_1.7.0_test |           address: "192.168.170.1"
+envoy_1.7.0_test |           port_value: 50051
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | ]
+envoy_1.7.0_test | [2018-08-24 06:36:59.788][1][debug][upstream] source/common/config/grpc_mux_impl.cc:166] Received gRPC message for type.googleapis.com/envoy.api.v2.Listener at version 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.808][1][debug][upstream] source/common/config/grpc_mux_impl.cc:133] Pausing discovery requests for type.googleapis.com/envoy.api.v2.RouteConfiguration
+envoy_1.7.0_test | [2018-08-24 06:36:59.808][1][debug][config] source/server/listener_manager_impl.cc:638] begin add/update listener: name=0.0.0.0_15001 hash=613788652839714921
+envoy_1.7.0_test | [2018-08-24 06:36:59.808][1][debug][config] source/server/listener_manager_impl.cc:40]   filter #0:
+envoy_1.7.0_test | [2018-08-24 06:36:59.808][1][debug][config] source/server/listener_manager_impl.cc:41]     name: envoy.http_connection_manager
+envoy_1.7.0_test | [2018-08-24 06:36:59.808][1][debug][config] source/server/listener_manager_impl.cc:44]   config: {"generate_request_id":true,"rds":{"config_source":{"ads":{}},"route_config_name":"15001"},"stat_prefix":"0.0.0.0_15001","access_log":[{"config":{"path":"/dev/stdout"},"name":"envoy.file_access_log"}],"use_remote_address":false,"http_filters":[{"name":"envoy.cors"},{"name":"envoy.fault"},{"name":"envoy.router"}],"tracing":{"operation_name":"EGRESS","client_sampling":{"value":100},"overall_sampling":{"value":100},"random_sampling":{"value":100}}}
+envoy_1.7.0_test | [2018-08-24 06:36:59.810][1][debug][upstream] source/common/config/grpc_mux_impl.cc:106] gRPC mux subscribe for type.googleapis.com/envoy.api.v2.RouteConfiguration
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:277]     http filter #0
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:278]       name: envoy.cors
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:282]     config: {}
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:277]     http filter #1
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:278]       name: envoy.fault
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:282]     config: {}
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:277]     http filter #2
+envoy_1.7.0_test | [2018-08-24 06:36:59.811][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:278]       name: envoy.router
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][debug][config] source/extensions/filters/network/http_connection_manager/config.cc:282]     config: {}
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][debug][config] source/server/listener_manager_impl.cc:524] add active listener: name=0.0.0.0_15001, hash=613788652839714921, address=0.0.0.0:15001
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][info][upstream] source/server/lds_api.cc:80] lds: add/update listener '0.0.0.0_15001'
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][debug][config] source/server/listener_manager_impl.cc:638] begin add/update listener: name=192.168.170.138_3333 hash=12334192919998507134
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][debug][config] source/server/listener_manager_impl.cc:40]   filter #0:
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][debug][config] source/server/listener_manager_impl.cc:41]     name: envoy.tcp_proxy
+envoy_1.7.0_test | [2018-08-24 06:36:59.812][1][debug][config] source/server/listener_manager_impl.cc:44]   config: {"cluster":"inbound|3333||mgmtCluster","stat_prefix":"inbound|3333||mgmtCluster"}
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:524] add active listener: name=192.168.170.138_3333, hash=12334192919998507134, address=192.168.170.138:3333
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][info][upstream] source/server/lds_api.cc:80] lds: add/update listener '192.168.170.138_3333'
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:638] begin add/update listener: name=192.168.170.138_9999 hash=17145897864835582922
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:40]   filter #0:
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:41]     name: envoy.tcp_proxy
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:44]   config: {"cluster":"inbound|9999||mgmtCluster","stat_prefix":"inbound|9999||mgmtCluster"}
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:524] add active listener: name=192.168.170.138_9999, hash=17145897864835582922, address=192.168.170.138:9999
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][info][upstream] source/server/lds_api.cc:80] lds: add/update listener '192.168.170.138_9999'
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:638] begin add/update listener: name=virtual hash=7303906540416275052
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:40]   filter #0:
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:41]     name: envoy.tcp_proxy
+envoy_1.7.0_test | [2018-08-24 06:36:59.813][1][debug][config] source/server/listener_manager_impl.cc:44]   config: {"cluster":"BlackHoleCluster","stat_prefix":"BlackHoleCluster"}
+envoy_1.7.0_test | [2018-08-24 06:36:59.814][1][debug][config] source/server/listener_manager_impl.cc:524] add active listener: name=virtual, hash=7303906540416275052, address=0.0.0.0:15001
+envoy_1.7.0_test | [2018-08-24 06:36:59.814][1][info][upstream] source/server/lds_api.cc:80] lds: add/update listener 'virtual'
+envoy_1.7.0_test | [2018-08-24 06:36:59.814][1][debug][upstream] source/common/config/grpc_mux_impl.cc:141] Resuming discovery requests for type.googleapis.com/envoy.api.v2.RouteConfiguration
+envoy_1.7.0_test | [2018-08-24 06:36:59.814][1][debug][config] bazel-out/k8-opt/bin/source/common/config/_virtual_includes/grpc_mux_subscription_lib/common/config/grpc_mux_subscription_impl.h:60] gRPC config for type.googleapis.com/envoy.api.v2.Listener accepted with 4 resources: [name: "0.0.0.0_15001"
+envoy_1.7.0_test | address {
+envoy_1.7.0_test |   socket_address {
+envoy_1.7.0_test |     address: "0.0.0.0"
+envoy_1.7.0_test |     port_value: 15001
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | filter_chains {
+envoy_1.7.0_test |   filters {
+envoy_1.7.0_test |     name: "envoy.http_connection_manager"
+envoy_1.7.0_test |     config {
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "access_log"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           list_value {
+envoy_1.7.0_test |             values {
+envoy_1.7.0_test |               struct_value {
+envoy_1.7.0_test |                 fields {
+envoy_1.7.0_test |                   key: "config"
+envoy_1.7.0_test |                   value {
+envoy_1.7.0_test |                     struct_value {
+envoy_1.7.0_test |                       fields {
+envoy_1.7.0_test |                         key: "path"
+envoy_1.7.0_test |                         value {
+envoy_1.7.0_test |                           string_value: "/dev/stdout"
+envoy_1.7.0_test |                         }
+envoy_1.7.0_test |                       }
+envoy_1.7.0_test |                     }
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |                 fields {
+envoy_1.7.0_test |                   key: "name"
+envoy_1.7.0_test |                   value {
+envoy_1.7.0_test |                     string_value: "envoy.file_access_log"
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |           }
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "generate_request_id"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           bool_value: true
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "http_filters"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           list_value {
+envoy_1.7.0_test |             values {
+envoy_1.7.0_test |               struct_value {
+envoy_1.7.0_test |                 fields {
+envoy_1.7.0_test |                   key: "name"
+envoy_1.7.0_test |                   value {
+envoy_1.7.0_test |                     string_value: "envoy.cors"
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |             values {
+envoy_1.7.0_test |               struct_value {
+envoy_1.7.0_test |                 fields {
+envoy_1.7.0_test |                   key: "name"
+envoy_1.7.0_test |                   value {
+envoy_1.7.0_test |                     string_value: "envoy.fault"
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |             values {
+envoy_1.7.0_test |               struct_value {
+envoy_1.7.0_test |                 fields {
+envoy_1.7.0_test |                   key: "name"
+envoy_1.7.0_test |                   value {
+envoy_1.7.0_test |                     string_value: "envoy.router"
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |           }
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "rds"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           struct_value {
+envoy_1.7.0_test |             fields {
+envoy_1.7.0_test |               key: "config_source"
+envoy_1.7.0_test |               value {
+envoy_1.7.0_test |                 struct_value {
+envoy_1.7.0_test |                   fields {
+envoy_1.7.0_test |                     key: "ads"
+envoy_1.7.0_test |                     value {
+envoy_1.7.0_test |                       struct_value {
+envoy_1.7.0_test |                       }
+envoy_1.7.0_test |                     }
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |             fields {
+envoy_1.7.0_test |               key: "route_config_name"
+envoy_1.7.0_test |               value {
+envoy_1.7.0_test |                 string_value: "15001"
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |           }
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "stat_prefix"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "0.0.0.0_15001"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "tracing"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           struct_value {
+envoy_1.7.0_test |             fields {
+envoy_1.7.0_test |               key: "client_sampling"
+envoy_1.7.0_test |               value {
+envoy_1.7.0_test |                 struct_value {
+envoy_1.7.0_test |                   fields {
+envoy_1.7.0_test |                     key: "value"
+envoy_1.7.0_test |                     value {
+envoy_1.7.0_test |                       number_value: 100
+envoy_1.7.0_test |                     }
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |             fields {
+envoy_1.7.0_test |               key: "operation_name"
+envoy_1.7.0_test |               value {
+envoy_1.7.0_test |                 string_value: "EGRESS"
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |             fields {
+envoy_1.7.0_test |               key: "overall_sampling"
+envoy_1.7.0_test |               value {
+envoy_1.7.0_test |                 struct_value {
+envoy_1.7.0_test |                   fields {
+envoy_1.7.0_test |                     key: "value"
+envoy_1.7.0_test |                     value {
+envoy_1.7.0_test |                       number_value: 100
+envoy_1.7.0_test |                     }
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |             fields {
+envoy_1.7.0_test |               key: "random_sampling"
+envoy_1.7.0_test |               value {
+envoy_1.7.0_test |                 struct_value {
+envoy_1.7.0_test |                   fields {
+envoy_1.7.0_test |                     key: "value"
+envoy_1.7.0_test |                     value {
+envoy_1.7.0_test |                       number_value: 100
+envoy_1.7.0_test |                     }
+envoy_1.7.0_test |                   }
+envoy_1.7.0_test |                 }
+envoy_1.7.0_test |               }
+envoy_1.7.0_test |             }
+envoy_1.7.0_test |           }
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "use_remote_address"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           bool_value: false
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | deprecated_v1 {
+envoy_1.7.0_test |   bind_to_port {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "192.168.170.138_3333"
+envoy_1.7.0_test | address {
+envoy_1.7.0_test |   socket_address {
+envoy_1.7.0_test |     address: "192.168.170.138"
+envoy_1.7.0_test |     port_value: 3333
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | filter_chains {
+envoy_1.7.0_test |   filters {
+envoy_1.7.0_test |     name: "envoy.tcp_proxy"
+envoy_1.7.0_test |     config {
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "cluster"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "inbound|3333||mgmtCluster"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "stat_prefix"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "inbound|3333||mgmtCluster"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | deprecated_v1 {
+envoy_1.7.0_test |   bind_to_port {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "192.168.170.138_9999"
+envoy_1.7.0_test | address {
+envoy_1.7.0_test |   socket_address {
+envoy_1.7.0_test |     address: "192.168.170.138"
+envoy_1.7.0_test |     port_value: 9999
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | filter_chains {
+envoy_1.7.0_test |   filters {
+envoy_1.7.0_test |     name: "envoy.tcp_proxy"
+envoy_1.7.0_test |     config {
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "cluster"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "inbound|9999||mgmtCluster"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "stat_prefix"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "inbound|9999||mgmtCluster"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | deprecated_v1 {
+envoy_1.7.0_test |   bind_to_port {
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | , name: "virtual"
+envoy_1.7.0_test | address {
+envoy_1.7.0_test |   socket_address {
+envoy_1.7.0_test |     address: "0.0.0.0"
+envoy_1.7.0_test |     port_value: 15001
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | filter_chains {
+envoy_1.7.0_test |   filters {
+envoy_1.7.0_test |     name: "envoy.tcp_proxy"
+envoy_1.7.0_test |     config {
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "cluster"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "BlackHoleCluster"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       fields {
+envoy_1.7.0_test |         key: "stat_prefix"
+envoy_1.7.0_test |         value {
+envoy_1.7.0_test |           string_value: "BlackHoleCluster"
+envoy_1.7.0_test |         }
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | use_original_dst {
+envoy_1.7.0_test |   value: true
+envoy_1.7.0_test | }
+envoy_1.7.0_test | ]
+envoy_1.7.0_test | [2018-08-24 06:36:59.824][1][debug][upstream] source/common/config/grpc_mux_impl.cc:166] Received gRPC message for type.googleapis.com/envoy.api.v2.RouteConfiguration at version 0
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][1][debug][router] source/common/router/rds_impl.cc:124] rds: loading new configuration: config_name=15001 hash=1010388444502191879
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][1][info][config] source/server/listener_manager_impl.cc:908] all dependencies initialized. starting workers
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][13][debug][main] source/server/worker_impl.cc:91] worker entering dispatch loop
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][14][debug][main] source/server/worker_impl.cc:91] worker entering dispatch loop
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][16][debug][main] source/server/worker_impl.cc:91] worker entering dispatch loop
+envoy_1.7.0_test | [2018-08-24 06:36:59.825][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][18][debug][grpc] source/common/grpc/google_async_client_impl.cc:41] completionThread running
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][13][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][16][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][15][debug][grpc] source/common/grpc/google_async_client_impl.cc:41] completionThread running
+envoy_1.7.0_test | [2018-08-24 06:36:59.826][17][debug][main] source/server/worker_impl.cc:91] worker entering dispatch loop
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][1][debug][config] bazel-out/k8-opt/bin/source/common/config/_virtual_includes/grpc_mux_subscription_lib/common/config/grpc_mux_subscription_impl.h:60] gRPC config for type.googleapis.com/envoy.api.v2.RouteConfiguration accepted with 1 resources: [name: "15001"
+envoy_1.7.0_test | virtual_hosts {
+envoy_1.7.0_test |   name: "hello_server.ns-a:15001"
+envoy_1.7.0_test |   domains: "hello_server.ns-a"
+envoy_1.7.0_test |   domains: "hello_server.ns-a:15001"
+envoy_1.7.0_test |   routes {
+envoy_1.7.0_test |     match {
+envoy_1.7.0_test |       prefix: "/"
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |     route {
+envoy_1.7.0_test |       cluster: "outbound|15001||hello_server.ns-a"
+envoy_1.7.0_test |       timeout {
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |     decorator {
+envoy_1.7.0_test |       operation: "hello_server.ns-a:15001/*"
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | virtual_hosts {
+envoy_1.7.0_test |   name: "hello_server_alpha.ns-a:15001"
+envoy_1.7.0_test |   domains: "hello_server_alpha.ns-a"
+envoy_1.7.0_test |   domains: "hello_server_alpha.ns-a:15001"
+envoy_1.7.0_test |   routes {
+envoy_1.7.0_test |     match {
+envoy_1.7.0_test |       prefix: "/hello"
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |     route {
+envoy_1.7.0_test |       cluster: "outbound|15001|v1|hello_server_alpha.ns-a"
+envoy_1.7.0_test |       timeout {
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |       use_websocket {
+envoy_1.7.0_test |       }
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |     decorator {
+envoy_1.7.0_test |       operation: "hello_server_alpha.ns-a:15001/hello*"
+envoy_1.7.0_test |     }
+envoy_1.7.0_test |   }
+envoy_1.7.0_test | }
+envoy_1.7.0_test | validate_clusters {
+envoy_1.7.0_test | }
+envoy_1.7.0_test | ]
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][20][debug][grpc] source/common/grpc/google_async_client_impl.cc:41] completionThread running
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][19][debug][grpc] source/common/grpc/google_async_client_impl.cc:41] completionThread running
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:815] adding TLS initial cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster ads_cluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][17][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.827][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|3333||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster inbound|9999||mgmtCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:530] updating TLS cluster BlackHoleCluster
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001|v1|hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server_alpha.ns-a
+envoy_1.7.0_test | [2018-08-24 06:36:59.828][14][debug][upstream] source/common/upstream/cluster_manager_impl.cc:952] membership update for TLS cluster outbound|15001||hello_server.ns-a
+envoy_1.7.0_test | [2018-08-24 06:37:04.759][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:09.760][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:14.767][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:19.057][17][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:19.058][17][debug][main] source/server/connection_handler_impl.cc:218] [C1] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:19.070][17][debug][http2] source/common/http/http2/codec_impl.cc:621] [C1] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:19.070][17][debug][http2] source/common/http/http2/codec_impl.cc:643] [C1] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:19.079][17][debug][http] source/common/http/conn_manager_impl.cc:190] [C1] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:19.079][17][debug][http] source/common/http/conn_manager_impl.cc:494] [C1][S16561854364548605210] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '983278u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:19.080][17][debug][router] source/common/router/router.cc:252] [C1][S16561854364548605210] cluster 'outbound|15001|v1|hello_server_alpha.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:19.080][17][debug][router] source/common/router/router.cc:303] [C1][S16561854364548605210] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '983278u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', 'c29b09f7-1a86-93ab-a12a-3f94ea159e1d'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server_alpha.ns-a:15001/hello*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:19.080][17][debug][client] source/common/http/codec_client.cc:25] [C2] connecting
+envoy_1.7.0_test | [2018-08-24 06:37:19.080][17][debug][connection] source/common/network/connection_impl.cc:572] [C2] connecting to 192.168.170.138:50052
+envoy_1.7.0_test | [2018-08-24 06:37:19.080][17][debug][connection] source/common/network/connection_impl.cc:581] [C2] connection in progress
+envoy_1.7.0_test | [2018-08-24 06:37:19.081][17][debug][http2] source/common/http/http2/codec_impl.cc:614] [C2] setting max concurrent streams to 1073741824
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][http2] source/common/http/http2/codec_impl.cc:621] [C2] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][http2] source/common/http/http2/codec_impl.cc:643] [C2] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][pool] source/common/http/http2/conn_pool.cc:97] [C2] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][router] source/common/router/router.cc:971] [C1][S16561854364548605210] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][http] source/common/http/conn_manager_impl.cc:893] [C1][S16561854364548605210] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][connection] source/common/network/connection_impl.cc:466] [C2] connected
+envoy_1.7.0_test | [2018-08-24 06:37:19.082][17][debug][client] source/common/http/codec_client.cc:63] [C2] connected
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][router] source/common/router/router.cc:583] [C1][S16561854364548605210] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][http] source/common/http/conn_manager_impl.cc:1087] [C1][S16561854364548605210] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '81'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:18 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][client] source/common/http/codec_client.cc:94] [C2] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][pool] source/common/http/http2/conn_pool.cc:189] [C2] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24T06:37:19.079Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 24 84 81 "-" "grpc-go/1.15.0-dev" "c29b09f7-1a86-93ab-a12a-3f94ea159e1d" "hello_server_alpha.ns-a" "192.168.170.138:50052"
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][http] source/common/http/conn_manager_impl.cc:1205] [C1][S16561854364548605210] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][http2] source/common/http/http2/codec_impl.cc:501] [C1] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:19.164][17][debug][http2] source/common/http/http2/codec_impl.cc:501] [C2] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:19.167][17][debug][connection] source/common/network/connection_impl.cc:451] [C1] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:19.168][17][debug][connection] source/common/network/connection_impl.cc:133] [C1] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:19.168][17][debug][main] source/server/connection_handler_impl.cc:51] [C1] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24 06:37:19.769][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:23.400][16][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:23.400][16][debug][main] source/server/connection_handler_impl.cc:218] [C3] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:23.402][16][debug][http2] source/common/http/http2/codec_impl.cc:621] [C3] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:23.402][16][debug][http2] source/common/http/http2/codec_impl.cc:643] [C3] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][http] source/common/http/conn_manager_impl.cc:190] [C3] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][http] source/common/http/conn_manager_impl.cc:494] [C3][S11674110787584129025] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '990990u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][router] source/common/router/router.cc:252] [C3][S11674110787584129025] cluster 'outbound|15001|v1|hello_server_alpha.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][router] source/common/router/router.cc:303] [C3][S11674110787584129025] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '990990u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', '413f2d2a-e4a6-9c2f-b7c2-da347d18d0a3'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server_alpha.ns-a:15001/hello*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][client] source/common/http/codec_client.cc:25] [C4] connecting
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][connection] source/common/network/connection_impl.cc:572] [C4] connecting to 192.168.170.138:50052
+envoy_1.7.0_test | [2018-08-24 06:37:23.405][16][debug][connection] source/common/network/connection_impl.cc:581] [C4] connection in progress
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][http2] source/common/http/http2/codec_impl.cc:614] [C4] setting max concurrent streams to 1073741824
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][http2] source/common/http/http2/codec_impl.cc:621] [C4] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][http2] source/common/http/http2/codec_impl.cc:643] [C4] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][pool] source/common/http/http2/conn_pool.cc:97] [C4] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][router] source/common/router/router.cc:971] [C3][S11674110787584129025] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][http] source/common/http/conn_manager_impl.cc:893] [C3][S11674110787584129025] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][connection] source/common/network/connection_impl.cc:466] [C4] connected
+envoy_1.7.0_test | [2018-08-24 06:37:23.406][16][debug][client] source/common/http/codec_client.cc:63] [C4] connected
+envoy_1.7.0_test | [2018-08-24 06:37:23.410][16][debug][router] source/common/router/router.cc:583] [C3][S11674110787584129025] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:23.410][16][debug][http] source/common/http/conn_manager_impl.cc:1087] [C3][S11674110787584129025] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '4'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:23 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:23.411][16][debug][client] source/common/http/codec_client.cc:94] [C4] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:23.411][16][debug][pool] source/common/http/http2/conn_pool.cc:189] [C4] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24 06:37:23.411][16][debug][http] source/common/http/conn_manager_impl.cc:1205] [C3][S11674110787584129025] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:23.411][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C3] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:23.411][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C4] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:23.418][16][debug][connection] source/common/network/connection_impl.cc:451] [C3] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:23.418][16][debug][connection] source/common/network/connection_impl.cc:133] [C3] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:23.419][16][debug][main] source/server/connection_handler_impl.cc:51] [C3] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24 06:37:24.330][16][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:24.330][16][debug][main] source/server/connection_handler_impl.cc:218] [C5] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:24.331][16][debug][http2] source/common/http/http2/codec_impl.cc:621] [C5] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:24.331][16][debug][http2] source/common/http/http2/codec_impl.cc:643] [C5] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:24.332][16][debug][http] source/common/http/conn_manager_impl.cc:190] [C5] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:24.333][16][debug][http] source/common/http/conn_manager_impl.cc:494] [C5][S13338727834303205015] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '996499u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:24.333][16][debug][router] source/common/router/router.cc:252] [C5][S13338727834303205015] cluster 'outbound|15001|v1|hello_server_alpha.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:24.333][16][debug][router] source/common/router/router.cc:303] [C5][S13338727834303205015] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '996499u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', '26f8d641-3b9c-9cc7-a50e-04bda85677f5'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server_alpha.ns-a:15001/hello*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:24.333][16][debug][pool] source/common/http/http2/conn_pool.cc:97] [C4] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:24.333][16][debug][router] source/common/router/router.cc:971] [C5][S13338727834303205015] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:24.333][16][debug][http] source/common/http/conn_manager_impl.cc:893] [C5][S13338727834303205015] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][router] source/common/router/router.cc:583] [C5][S13338727834303205015] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][http] source/common/http/conn_manager_impl.cc:1087] [C5][S13338727834303205015] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '2'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:24 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][client] source/common/http/codec_client.cc:94] [C4] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][pool] source/common/http/http2/conn_pool.cc:189] [C4] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][http] source/common/http/conn_manager_impl.cc:1205] [C5][S13338727834303205015] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C5] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:24.336][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C4] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:24.340][16][debug][connection] source/common/network/connection_impl.cc:451] [C5] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:24.340][16][debug][connection] source/common/network/connection_impl.cc:133] [C5] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:24.340][16][debug][main] source/server/connection_handler_impl.cc:51] [C5] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24 06:37:24.772][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:25.010][16][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:25.010][16][debug][main] source/server/connection_handler_impl.cc:218] [C6] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:25.011][16][debug][http2] source/common/http/http2/codec_impl.cc:621] [C6] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:25.011][16][debug][http2] source/common/http/http2/codec_impl.cc:643] [C6] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][http] source/common/http/conn_manager_impl.cc:190] [C6] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][http] source/common/http/conn_manager_impl.cc:494] [C6][S5172611121831304316] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '997778u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][router] source/common/router/router.cc:252] [C6][S5172611121831304316] cluster 'outbound|15001|v1|hello_server_alpha.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][router] source/common/router/router.cc:303] [C6][S5172611121831304316] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server_alpha.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '997778u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', 'a6239696-6c5e-9944-af19-5bd0b1804b98'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server_alpha.ns-a:15001/hello*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][pool] source/common/http/http2/conn_pool.cc:97] [C4] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][router] source/common/router/router.cc:971] [C6][S5172611121831304316] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:25.012][16][debug][http] source/common/http/conn_manager_impl.cc:893] [C6][S5172611121831304316] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][router] source/common/router/router.cc:583] [C6][S5172611121831304316] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][http] source/common/http/conn_manager_impl.cc:1087] [C6][S5172611121831304316] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '0'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:24 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][client] source/common/http/codec_client.cc:94] [C4] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][pool] source/common/http/http2/conn_pool.cc:189] [C4] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][http] source/common/http/conn_manager_impl.cc:1205] [C6][S5172611121831304316] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C6] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:25.013][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C4] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:25.031][16][debug][connection] source/common/network/connection_impl.cc:451] [C6] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:25.031][16][debug][connection] source/common/network/connection_impl.cc:133] [C6] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:25.031][16][debug][main] source/server/connection_handler_impl.cc:51] [C6] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24 06:37:28.285][16][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:28.285][16][debug][main] source/server/connection_handler_impl.cc:218] [C7] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:28.287][16][debug][http2] source/common/http/http2/codec_impl.cc:621] [C7] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:28.287][16][debug][http2] source/common/http/http2/codec_impl.cc:643] [C7] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:28.290][16][debug][http] source/common/http/conn_manager_impl.cc:190] [C7] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:28.290][16][debug][http] source/common/http/conn_manager_impl.cc:494] [C7][S10966458334362995687] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '995724u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:28.290][16][debug][router] source/common/router/router.cc:252] [C7][S10966458334362995687] cluster 'outbound|15001||hello_server.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:28.290][16][debug][router] source/common/router/router.cc:303] [C7][S10966458334362995687] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '995724u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', '8596504a-92fa-9cd0-b308-f6dce2becc02'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server.ns-a:15001/*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][client] source/common/http/codec_client.cc:25] [C8] connecting
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][connection] source/common/network/connection_impl.cc:572] [C8] connecting to 192.168.170.1:50051
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][connection] source/common/network/connection_impl.cc:581] [C8] connection in progress
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][http2] source/common/http/http2/codec_impl.cc:614] [C8] setting max concurrent streams to 1073741824
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][http2] source/common/http/http2/codec_impl.cc:621] [C8] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][http2] source/common/http/http2/codec_impl.cc:643] [C8] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:28.291][16][debug][pool] source/common/http/http2/conn_pool.cc:97] [C8] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:28.292][16][debug][router] source/common/router/router.cc:971] [C7][S10966458334362995687] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:28.292][16][debug][http] source/common/http/conn_manager_impl.cc:893] [C7][S10966458334362995687] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:28.292][16][debug][connection] source/common/network/connection_impl.cc:466] [C8] connected
+envoy_1.7.0_test | [2018-08-24 06:37:28.292][16][debug][client] source/common/http/codec_client.cc:63] [C8] connected
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][router] source/common/router/router.cc:583] [C7][S10966458334362995687] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][http] source/common/http/conn_manager_impl.cc:1087] [C7][S10966458334362995687] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '17'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:27 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][client] source/common/http/codec_client.cc:94] [C8] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][pool] source/common/http/http2/conn_pool.cc:189] [C8] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][http] source/common/http/conn_manager_impl.cc:1205] [C7][S10966458334362995687] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C7] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:28.309][16][debug][http2] source/common/http/http2/codec_impl.cc:501] [C8] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:28.316][16][debug][connection] source/common/network/connection_impl.cc:451] [C7] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:28.316][16][debug][connection] source/common/network/connection_impl.cc:133] [C7] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:28.316][16][debug][main] source/server/connection_handler_impl.cc:51] [C7] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24T06:37:23.405Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 24 6 4 "-" "grpc-go/1.15.0-dev" "413f2d2a-e4a6-9c2f-b7c2-da347d18d0a3" "hello_server_alpha.ns-a" "192.168.170.138:50052"
+envoy_1.7.0_test | [2018-08-24T06:37:24.332Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 24 3 2 "-" "grpc-go/1.15.0-dev" "26f8d641-3b9c-9cc7-a50e-04bda85677f5" "hello_server_alpha.ns-a" "192.168.170.138:50052"
+envoy_1.7.0_test | [2018-08-24T06:37:25.012Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 24 1 0 "-" "grpc-go/1.15.0-dev" "a6239696-6c5e-9944-af19-5bd0b1804b98" "hello_server_alpha.ns-a" "192.168.170.138:50052"
+envoy_1.7.0_test | [2018-08-24T06:37:28.290Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 19 19 17 "-" "grpc-go/1.15.0-dev" "8596504a-92fa-9cd0-b308-f6dce2becc02" "hello_server.ns-a" "192.168.170.1:50051"
+envoy_1.7.0_test | [2018-08-24 06:37:29.740][17][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:29.741][17][debug][main] source/server/connection_handler_impl.cc:218] [C9] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:29.741][17][debug][http2] source/common/http/http2/codec_impl.cc:621] [C9] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:29.741][17][debug][http2] source/common/http/http2/codec_impl.cc:643] [C9] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:29.743][17][debug][http] source/common/http/conn_manager_impl.cc:190] [C9] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:29.743][17][debug][http] source/common/http/conn_manager_impl.cc:494] [C9][S3101852703659927598] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '993155u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:29.743][17][debug][router] source/common/router/router.cc:252] [C9][S3101852703659927598] cluster 'outbound|15001||hello_server.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:29.743][17][debug][router] source/common/router/router.cc:303] [C9][S3101852703659927598] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '993155u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', '3fd1c451-c38e-9e8d-bb55-85c82a3e0f47'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server.ns-a:15001/*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:29.743][17][debug][client] source/common/http/codec_client.cc:25] [C10] connecting
+envoy_1.7.0_test | [2018-08-24 06:37:29.743][17][debug][connection] source/common/network/connection_impl.cc:572] [C10] connecting to 192.168.170.138:50051
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][connection] source/common/network/connection_impl.cc:581] [C10] connection in progress
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][http2] source/common/http/http2/codec_impl.cc:614] [C10] setting max concurrent streams to 1073741824
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][http2] source/common/http/http2/codec_impl.cc:621] [C10] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][http2] source/common/http/http2/codec_impl.cc:643] [C10] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][pool] source/common/http/http2/conn_pool.cc:97] [C10] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][router] source/common/router/router.cc:971] [C9][S3101852703659927598] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][http] source/common/http/conn_manager_impl.cc:893] [C9][S3101852703659927598] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][connection] source/common/network/connection_impl.cc:466] [C10] connected
+envoy_1.7.0_test | [2018-08-24 06:37:29.744][17][debug][client] source/common/http/codec_client.cc:63] [C10] connected
+envoy_1.7.0_test | [2018-08-24 06:37:29.775][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:29.817][17][debug][router] source/common/router/router.cc:583] [C9][S3101852703659927598] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:29.817][17][debug][http] source/common/http/conn_manager_impl.cc:1087] [C9][S3101852703659927598] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '73'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:29 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:29.817][17][debug][client] source/common/http/codec_client.cc:94] [C10] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:29.817][17][debug][pool] source/common/http/http2/conn_pool.cc:189] [C10] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24 06:37:29.817][17][debug][http] source/common/http/conn_manager_impl.cc:1205] [C9][S3101852703659927598] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:29.817][17][debug][http2] source/common/http/http2/codec_impl.cc:501] [C9] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:29.818][17][debug][http2] source/common/http/http2/codec_impl.cc:501] [C10] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:29.820][17][debug][connection] source/common/network/connection_impl.cc:451] [C9] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:29.820][17][debug][connection] source/common/network/connection_impl.cc:133] [C9] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:29.821][17][debug][main] source/server/connection_handler_impl.cc:51] [C9] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24 06:37:30.594][14][debug][filter] source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
+envoy_1.7.0_test | [2018-08-24 06:37:30.594][14][debug][main] source/server/connection_handler_impl.cc:218] [C11] new connection
+envoy_1.7.0_test | [2018-08-24 06:37:30.602][14][debug][http2] source/common/http/http2/codec_impl.cc:621] [C11] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:30.602][14][debug][http2] source/common/http/http2/codec_impl.cc:643] [C11] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][http] source/common/http/conn_manager_impl.cc:190] [C11] new stream
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][http] source/common/http/conn_manager_impl.cc:494] [C11][S7257421646368753054] request headers complete (end_stream=false):
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '990691u'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][router] source/common/router/router.cc:252] [C11][S7257421646368753054] cluster 'outbound|15001||hello_server.ns-a' match for URL '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][router] source/common/router/router.cc:303] [C11][S7257421646368753054] router decoding headers:
+envoy_1.7.0_test | ':method', 'POST'
+envoy_1.7.0_test | ':scheme', 'http'
+envoy_1.7.0_test | ':path', '/helloworld.Greeter/SayHello'
+envoy_1.7.0_test | ':authority', 'hello_server.ns-a'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'user-agent', 'grpc-go/1.15.0-dev'
+envoy_1.7.0_test | 'te', 'trailers'
+envoy_1.7.0_test | 'grpc-timeout', '990691u'
+envoy_1.7.0_test | 'x-forwarded-proto', 'http'
+envoy_1.7.0_test | 'x-request-id', '5805d370-5fd1-9115-86e8-615d14e233c6'
+envoy_1.7.0_test | 'x-envoy-decorator-operation', 'hello_server.ns-a:15001/*'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][client] source/common/http/codec_client.cc:25] [C12] connecting
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][connection] source/common/network/connection_impl.cc:572] [C12] connecting to 192.168.170.1:50051
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][connection] source/common/network/connection_impl.cc:581] [C12] connection in progress
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][http2] source/common/http/http2/codec_impl.cc:614] [C12] setting max concurrent streams to 1073741824
+envoy_1.7.0_test | [2018-08-24 06:37:30.604][14][debug][http2] source/common/http/http2/codec_impl.cc:621] [C12] setting stream-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:30.605][14][debug][http2] source/common/http/http2/codec_impl.cc:643] [C12] updating connection-level initial window size to 268435456
+envoy_1.7.0_test | [2018-08-24 06:37:30.605][14][debug][pool] source/common/http/http2/conn_pool.cc:97] [C12] creating stream
+envoy_1.7.0_test | [2018-08-24 06:37:30.605][14][debug][router] source/common/router/router.cc:971] [C11][S7257421646368753054] pool ready
+envoy_1.7.0_test | [2018-08-24 06:37:30.605][14][debug][http] source/common/http/conn_manager_impl.cc:893] [C11][S7257421646368753054] request end stream
+envoy_1.7.0_test | [2018-08-24 06:37:30.605][14][debug][connection] source/common/network/connection_impl.cc:466] [C12] connected
+envoy_1.7.0_test | [2018-08-24 06:37:30.605][14][debug][client] source/common/http/codec_client.cc:63] [C12] connected
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][router] source/common/router/router.cc:583] [C11][S7257421646368753054] upstream headers complete: end_stream=false
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][http] source/common/http/conn_manager_impl.cc:1087] [C11][S7257421646368753054] encoding headers via codec (end_stream=false):
+envoy_1.7.0_test | ':status', '200'
+envoy_1.7.0_test | 'content-type', 'application/grpc'
+envoy_1.7.0_test | 'x-envoy-upstream-service-time', '1'
+envoy_1.7.0_test | 'date', 'Fri, 24 Aug 2018 06:37:30 GMT'
+envoy_1.7.0_test | 'server', 'envoy'
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][client] source/common/http/codec_client.cc:94] [C12] response complete
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][pool] source/common/http/http2/conn_pool.cc:189] [C12] destroying stream: 0 remaining
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][http] source/common/http/conn_manager_impl.cc:1205] [C11][S7257421646368753054] encoding trailers via codec:
+envoy_1.7.0_test | 'grpc-status', '0'
+envoy_1.7.0_test | 'grpc-message', ''
+envoy_1.7.0_test | 
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][http2] source/common/http/http2/codec_impl.cc:501] [C11] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:30.606][14][debug][http2] source/common/http/http2/codec_impl.cc:501] [C12] stream closed: 0
+envoy_1.7.0_test | [2018-08-24 06:37:30.611][14][debug][connection] source/common/network/connection_impl.cc:451] [C11] remote close
+envoy_1.7.0_test | [2018-08-24 06:37:30.611][14][debug][connection] source/common/network/connection_impl.cc:133] [C11] closing socket: 0
+envoy_1.7.0_test | [2018-08-24 06:37:30.611][14][debug][main] source/server/connection_handler_impl.cc:51] [C11] adding to cleanup list
+envoy_1.7.0_test | [2018-08-24 06:37:34.777][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24T06:37:29.743Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 18 74 73 "-" "grpc-go/1.15.0-dev" "3fd1c451-c38e-9e8d-bb55-85c82a3e0f47" "hello_server.ns-a" "192.168.170.138:50051"
+envoy_1.7.0_test | [2018-08-24T06:37:30.604Z] "POST /helloworld.Greeter/SayHello HTTP/2" 200 - 12 19 2 1 "-" "grpc-go/1.15.0-dev" "5805d370-5fd1-9115-86e8-615d14e233c6" "hello_server.ns-a" "192.168.170.1:50051"
+envoy_1.7.0_test | [2018-08-24 06:37:39.778][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:44.779][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:49.785][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:54.787][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:37:59.791][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:04.794][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:09.800][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:14.801][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:19.805][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:24.811][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:29.812][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:34.815][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:39.819][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:44.822][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:49.825][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:54.827][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:38:59.831][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:04.833][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:09.834][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:14.839][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:19.849][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:24.852][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:29.852][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:34.853][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:39.856][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:44.855][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:49.856][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:54.859][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:39:59.862][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:04.860][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:09.863][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:14.868][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:19.872][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:24.879][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:29.883][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:34.885][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:39.886][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:44.888][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:49.889][1][debug][main] source/server/server.cc:126] flushing stats
+envoy_1.7.0_test | [2018-08-24 06:40:54.892][1][debug][main] source/server/server.cc:126] flushing stats
+^CGracefully stopping... (press Ctrl+C again to force)
+Killing envoy_1.7.0_test    ... done
+spider@lv:~/test$ 

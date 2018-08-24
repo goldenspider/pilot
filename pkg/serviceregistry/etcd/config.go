@@ -149,6 +149,13 @@ func (c *configStoreCache) List(typ, namespace string) ([]model.Config, error) {
 		if err != nil || len(varr) == 0 {
 			fmt.Printf("ParseInputs(correct input) => got %v, %v", varr, err)
 		}
+
+		varr_alpha, err := ParseInputs(vsdata_alpha)
+		if err != nil || len(varr_alpha) == 0 {
+			fmt.Printf("ParseInputs(correct input) => got %v, %v", varr_alpha, err)
+		}
+
+		copy(varr, varr_alpha)
 		fmt.Printf("virtual-service Ok: varr:%+v\n", varr)
 		return varr, nil
 	}
@@ -158,6 +165,11 @@ func (c *configStoreCache) List(typ, namespace string) ([]model.Config, error) {
 		if err != nil || len(varr) == 0 {
 			fmt.Printf("ParseInputs(correct input) => got %v, %v", varr, err)
 		}
+		varr_alpha, err := ParseInputs(drdata_alpha)
+		if err != nil || len(varr_alpha) == 0 {
+			fmt.Printf("ParseInputs(correct input) => got %v, %v", varr_alpha, err)
+		}
+		copy(varr, varr_alpha)
 		fmt.Printf("destination-rule Ok: varr:%+v\n", varr)
 		return varr, nil
 	}
