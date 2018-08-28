@@ -21,6 +21,7 @@ import (
 	etcd "github.com/coreos/etcd/clientv3"
 	"github.com/golang/glog"
 	"istio.io/istio/pilot/pkg/model"
+	m "pilot/manager/etcd"
 	"sync"
 
 	"sync/atomic"
@@ -31,7 +32,7 @@ import (
 type Handler = func(model.Config, model.Event)
 
 type configStoreCache struct {
-	client   *Client
+	client   *m.Client
 	handlers map[string][]Handler
 	mu       sync.RWMutex
 	cfgCache map[string]*configInfo
@@ -44,7 +45,7 @@ type configInfo struct {
 }
 
 // ConfigStoreCache instantiates the Eureka service account interface
-func NewConfigStoreCache(client *Client) model.ConfigStoreCache {
+func NewConfigStoreCache(client *m.Client) model.ConfigStoreCache {
 	return &configStoreCache{
 		client:   client,
 		handlers: map[string][]Handler{},
@@ -121,7 +122,7 @@ func (c *configStoreCache) updateCfgCache(key string, data []model.Config) {
 // Get retrieves a configuration element by a type and a key
 func (c *configStoreCache) Get(typ, name, namespace string) (config *model.Config, exists bool) {
 	var err error
-	key := c.client.configKey(typ, name, namespace)
+	key := c.client.ConfigKey(typ, name, namespace)
 	list, cached := c.cachedCfgCache(key)
 	if !cached {
 		if config, err = c.client.GetConfig(typ, name, namespace); err != nil {
@@ -223,7 +224,7 @@ func (c *configStoreCache) RegisterEventHandler(typ string, handler Handler) {
 // Run until a signal is received
 func (c *configStoreCache) Run(stop <-chan struct{}) {
 	ctx, cancel := context.WithCancel(context.Background())
-	key := c.client.configPrefix()
+	key := c.client.ConfigPrefix()
 	wch := c.client.Watch(ctx, key, etcd.WithPrefix())
 	ticker := time.NewTicker(2 * time.Minute)
 
@@ -241,7 +242,7 @@ func (c *configStoreCache) Run(stop <-chan struct{}) {
 			for _, event := range wresp.Events {
 				k := string(event.Kv.Key)
 
-				if typ, _, _, ok := c.client.splitConfigKey(k); ok {
+				if typ, _, _, ok := c.client.SplitConfigKey(k); ok {
 					if handles, ok := c.handlers[typ]; ok {
 						switch event.Type {
 						case etcd.EventTypePut:

@@ -22,6 +22,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/prometheus/common/log"
 	"istio.io/istio/pilot/pkg/model"
+	m "pilot/manager/etcd"
 	pb "pilot/pkg/proto/etcd"
 )
 
@@ -31,14 +32,14 @@ type ServiceHandler = func(*model.Service, model.Event)
 type (
 	// Controller communicates with Consul and monitors for changes
 	Controller struct {
-		client           *Client
+		client           *m.Client
 		instanceHandlers []InstanceHandler
 		serviceHandlers  []ServiceHandler
 	}
 )
 
 // NewController instantiates a new Etcd controller
-func NewController(client *Client) *Controller {
+func NewController(client *m.Client) *Controller {
 	return &Controller{
 		client:           client,
 		instanceHandlers: make([]InstanceHandler, 0),
@@ -124,7 +125,7 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 		return nil, fmt.Errorf("no found service . name=%s namespace=%s", name, namespace)
 	}
 
-	svc := ConvertService(service)
+	svc := m.ConvertService(service)
 
 	svcPortEntry, exists := svc.Ports.GetByPort(reqSvcPort)
 	if !exists && reqSvcPort != 0 {
@@ -133,29 +134,29 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 
 	var out []*model.ServiceInstance
 	for _, ep := range Endpoints {
-		if ep.Name == name && ep.Namespace == namespace {
-			node := getNode(ep.NodeName)
+		if ep.ServiceId == string(svc.Hostname) {
+			node := getNode(ep.NodeId)
 			if node == nil {
-				return nil, fmt.Errorf("no found node. nodeName=%s", ep.NodeName)
+				return nil, fmt.Errorf("no found node. NodeId=%s", ep.NodeId)
 			}
-			if !labelsList.HasSubsetOf(node.Labels) {
-				continue
-			}
+			//if !labelsList.HasSubsetOf(node.Labels) {
+			//	continue
+			//}
 			// identify the port by name. K8S EndpointPort uses the service port name
-			for _, port := range ep.Ports {
-				if svcPortEntry.Name == port.Name {
-					out = append(out, &model.ServiceInstance{
-						Endpoint: model.NetworkEndpoint{
-							Address:     node.Ip,
-							Port:        int(port.Port),
-							ServicePort: svcPortEntry,
-						},
-						Service:          svc,
-						Labels:           node.Labels,
-						AvailabilityZone: node.Az,
-					})
-				}
+
+			if svcPortEntry.Name == ep.Port.Name {
+				out = append(out, &model.ServiceInstance{
+					Endpoint: model.NetworkEndpoint{
+						Address:     node.Ip,
+						Port:        int(ep.Port.Port),
+						ServicePort: svcPortEntry,
+					},
+					Service:          svc,
+					Labels:           map[string]string{"version": ep.ServiceVersion},
+					AvailabilityZone: node.Az,
+				})
 			}
+
 		}
 	}
 	return out, nil
@@ -170,8 +171,8 @@ func (c *Controller) GetProxyServiceInstances(node *model.Proxy) ([]*model.Servi
 // Run all controllers until a signal is received
 func (c *Controller) Run(stop <-chan struct{}) {
 	ctx, cancel := context.WithCancel(context.Background())
-	wch := c.client.Watch(ctx, c.client.servicePrefix(), etcd.WithPrefix())
-	och := c.client.Watch(ctx, c.client.onlineRoot(), etcd.WithPrefix())
+	wch := c.client.Watch(ctx, c.client.ServicePrefix(), etcd.WithPrefix())
+	och := c.client.Watch(ctx, c.client.OnlineRoot(), etcd.WithPrefix())
 
 	glog.Info("controller is running...")
 	for {
@@ -184,7 +185,7 @@ func (c *Controller) Run(stop <-chan struct{}) {
 				k := string(event.Kv.Key)
 				glog.Infof("received an event. type = %s, key = %s", event.Type.String(), k)
 
-				if _, ok := c.client.splitServiceKey(k); ok {
+				if _, ok := c.client.SplitServiceKey(k); ok {
 					switch event.Type {
 					case etcd.EventTypePut:
 						for _, h := range c.serviceHandlers {
@@ -198,7 +199,7 @@ func (c *Controller) Run(stop <-chan struct{}) {
 					}
 				}
 
-				if _, _, ok := c.client.splitInstanceKey(k); ok {
+				if _, _, ok := c.client.SplitInstanceKey(k); ok {
 					switch event.Type {
 					case etcd.EventTypePut:
 						for _, h := range c.instanceHandlers {
@@ -217,7 +218,7 @@ func (c *Controller) Run(stop <-chan struct{}) {
 				k := string(event.Kv.Key)
 				glog.Infof("received an event. type = %s, key = %s", event.Type.String(), k)
 
-				if _, _, _, ok := c.client.splitOnlineKey(k); ok {
+				if _, _, _, ok := c.client.SplitOnlineKey(k); ok {
 					switch event.Type {
 					case etcd.EventTypePut:
 						for _, h := range c.instanceHandlers {

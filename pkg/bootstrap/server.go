@@ -43,6 +43,7 @@ import (
 	"net/http"
 	"os"
 	"pilot/cmd"
+	m "pilot/manager/etcd"
 	"pilot/pkg/serviceregistry"
 	"pilot/pkg/serviceregistry/etcd"
 	"strconv"
@@ -141,7 +142,7 @@ type Server struct {
 	discoveryService *envoy.DiscoveryService
 	istioConfigStore model.IstioConfigStore
 	mux              *http.ServeMux
-	etcdClient       *etcd.Client
+	etcdClient       *m.Client
 }
 
 // NewServer creates a new Server instance based on the provided arguments.
@@ -164,7 +165,7 @@ func NewServer(args PilotArgs) (*Server, error) {
 		return nil, multierror.Prefix(err, "failed to open a etcd client.")
 	}
 
-	client := etcd.NewClient(cli, args.Service.Etcd.EtcdPrefix, args.Service.Etcd.SdPrefix)
+	client := m.NewClient(cli, args.Service.Etcd.EtcdPrefix, args.Service.Etcd.SdPrefix)
 
 	s := &Server{etcdClient: client}
 	//////////////////////////

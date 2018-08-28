@@ -1,57 +1,28 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"github.com/coreos/etcd/clientv3"
-	"github.com/golang/glog"
+	"go.uber.org/zap"
 	"istio.io/istio/pilot/pkg/model"
+	m "pilot/manager/etcd"
 	pb "pilot/pkg/proto/etcd"
-	"pilot/pkg/serviceregistry/etcd"
 	"strings"
-	"time"
 )
 
-type ServiceManager struct {
-	prefix string
-
-	*clientv3.Client
+type manager struct {
+	*m.Client
+	ds *m.DataSource
+	sv *m.ServiceManager
 }
 
-func NewServiceManager(cli *clientv3.Client) *ServiceManager {
-	return &ServiceManager{Client: cli,
-		prefix: "/pilot",
-	}
-}
-
-func (c *ServiceManager) servicePrefix() string {
-	return fmt.Sprintf("%s/services/", c.prefix)
-}
-
-func (c *ServiceManager) serviceKey(service string) string {
-	return fmt.Sprintf("%s/services/%s", c.prefix, service)
-}
-
-func (c *ServiceManager) PutService(service *pb.Service) error {
-	glog.Infof("put service, service = %#v", service)
-	obj := etcd.ConvertService(service)
-
-	bytes, err := etcd.MarshalServiceToYAML(obj)
-	if err != nil {
-		glog.Errorf("failed to marshal service. error = %v", err)
-		return err
+func NewManager(cli *clientv3.Client, sv *m.ServiceManager, ds *m.DataSource) *manager {
+	return &manager{
+		Client: m.NewClient(cli, "/pilot", "/ns"),
+		sv:     sv,
+		ds:     ds,
 	}
 
-	ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
-	defer cancel()
-
-	key := c.serviceKey(string(obj.Hostname))
-	if _, err = c.Put(ctx, key, string(bytes)); err != nil {
-		glog.Errorf("failed to put service. key = %s, value = %s, error = %v", key, string(bytes), err)
-		return err
-	}
-	glog.Infof("put service, key = %s, value = %s", key, string(bytes), obj)
-	return nil
 }
 
 func convertProtocol(name string) model.Protocol {
@@ -68,6 +39,7 @@ var Services []*pb.Service = []*pb.Service{
 	&pb.Service{
 		Name:      "hello_server",
 		Namespace: "ns-a",
+		Version:   map[string]string{"v1": "test1", "v2": "test2"},
 		Ports: []*pb.Port{
 			{
 				Name:     "grpc",
@@ -75,11 +47,11 @@ var Services []*pb.Service = []*pb.Service{
 				Protocol: string(convertProtocol("grpc")),
 			},
 		},
-		CreationTimestamp: time.Now().Format("2006-01-02 15:04:05.999999999"),
 	},
 	&pb.Service{
 		Name:      "hello_server_alpha",
 		Namespace: "ns-a",
+		Version:   map[string]string{"v1": ""},
 		Ports: []*pb.Port{
 			{
 				Name:     "grpc",
@@ -87,60 +59,51 @@ var Services []*pb.Service = []*pb.Service{
 				Protocol: string(convertProtocol("grpc")),
 			},
 		},
-		CreationTimestamp: time.Now().Format("2006-01-02 15:04:05.999999999"),
 	},
 }
 
 var Nodes []*pb.Node = []*pb.Node{
 	&pb.Node{
-		NodeName: "192-168-170-138",
-		Ip:       "192.168.170.138",
-		Az:       "sh02",
-		Labels:   map[string]string{"version": "v1"},
+		Id: "192-168-170-138",
+		Ip: "192.168.170.138",
+		Az: "sh02",
 	},
 	&pb.Node{
-		NodeName: "192-168-170-1",
-		Ip:       "192.168.170.1",
-		Az:       "sh02",
-		Labels:   map[string]string{"version": "v2"},
+		Id: "192-168-170-1",
+		Ip: "192.168.170.1",
+		Az: "sh02",
 	},
 }
 
-var Endpoints []pb.Endpoint = []pb.Endpoint{
+var Endpoints []pb.Instance = []pb.Instance{
 	{
-		Name:      "hello_server",
-		Namespace: "ns-a",
-		NodeName:  "192-168-170-138",
-		Ports: []*pb.Port{
-			{
-				Name:     "grpc",
-				Port:     50051,
-				Protocol: string(convertProtocol("grpc")),
-			},
+		ServiceId:      "hello_server.ns-a",
+		ServiceVersion: "v1",
+		NodeId:         "192-168-170-138",
+		Port: &pb.Port{
+			Name:     "grpc",
+			Port:     50051,
+			Protocol: string(convertProtocol("grpc")),
 		},
 	},
 	{
-		Name:      "hello_server",
-		Namespace: "ns-a",
-		NodeName:  "192-168-170-1",
-		Ports: []*pb.Port{
-			{
-				Name:     "grpc",
-				Port:     50051,
-				Protocol: string(convertProtocol("grpc")),
-			},
+		ServiceId:      "hello_server.ns-a",
+		ServiceVersion: "v2",
+		NodeId:         "192-168-170-1",
+		Port: &pb.Port{
+			Name:     "grpc",
+			Port:     50051,
+			Protocol: string(convertProtocol("grpc")),
 		},
 	},
 	{
-		Name:      "hello_server_alpha",
-		Namespace: "ns-a",
-		NodeName:  "192-168-170-138",
-		Ports: []*pb.Port{
-			{
-				Name:     "grpc",
-				Port:     50052,
-				Protocol: string(convertProtocol("grpc")),
-			},
+		ServiceId:      "hello_server_alpha.ns-a",
+		ServiceVersion: "v1",
+		NodeId:         "192-168-170-138",
+		Port: &pb.Port{
+			Name:     "grpc",
+			Port:     50052,
+			Protocol: string(convertProtocol("grpc")),
 		},
 	},
 }
@@ -153,10 +116,18 @@ func main() {
 		fmt.Printf("failed to open a etcd client. %s", err)
 		return
 	}
-	sm := NewServiceManager(cli)
+
+	l, _ := zap.NewDevelopment()
+	zap.ReplaceGlobals(l)
+
+	ds := m.NewDataSource(l.Sugar(), cli)
+
+	sv := m.NewServiceManager(l.Sugar(), ds, m.NewClient(cli, "/pilot", "/ns"))
+
+	sm := NewManager(cli, sv, ds)
 
 	for _, svc := range Services {
-		e := sm.PutService(svc)
+		e := sm.sv.PutService(svc)
 		if e != nil {
 			fmt.Println(e)
 		}
