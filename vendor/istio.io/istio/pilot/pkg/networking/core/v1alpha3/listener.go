@@ -89,11 +89,10 @@ func init() {
 var ListenersALPNProtocols = []string{"h2", "http/1.1"}
 
 // BuildListeners produces a list of listeners and referenced clusters for all proxies
-func (configgen *ConfigGeneratorImpl) BuildListeners(env *model.Environment, node *model.Proxy, push *model.PushStatus) ([]*xdsapi.Listener, error) {
-	log.Infof("BuildListeners env %+v node %+v push %+v",*env,*node,*push)
+func (configgen *ConfigGeneratorImpl) BuildListeners(env *model.Environment, node *model.Proxy, push *model.PushContext) ([]*xdsapi.Listener, error) {
 	switch node.Type {
 	case model.Sidecar:
-		return configgen.buildSidecarListeners(env, node)
+		return configgen.buildSidecarListeners(env, node, push)
 	case model.Router, model.Ingress:
 		return configgen.buildGatewayListeners(env, node, push)
 	}
@@ -101,7 +100,8 @@ func (configgen *ConfigGeneratorImpl) BuildListeners(env *model.Environment, nod
 }
 
 // buildSidecarListeners produces a list of listeners for sidecar proxies
-func (configgen *ConfigGeneratorImpl) buildSidecarListeners(env *model.Environment, node *model.Proxy) ([]*xdsapi.Listener, error) {
+func (configgen *ConfigGeneratorImpl) buildSidecarListeners(env *model.Environment, node *model.Proxy,
+	push *model.PushContext) ([]*xdsapi.Listener, error) {
 
 	mesh := env.Mesh
 	managementPorts := env.ManagementPorts(node.IPAddress)
@@ -111,17 +111,13 @@ func (configgen *ConfigGeneratorImpl) buildSidecarListeners(env *model.Environme
 		return nil, err
 	}
 
-	services, err := env.Services()
-	if err != nil {
-		return nil, err
-	}
+	services := push.Services
 
 	listeners := make([]*xdsapi.Listener, 0)
 
 	if mesh.ProxyListenPort > 0 {
-		fmt.Printf("mesh.ProxyListenPort=%d\n",mesh.ProxyListenPort)
-		inbound := configgen.buildSidecarInboundListeners(env, node, proxyInstances)
-		outbound := configgen.buildSidecarOutboundListeners(env, node, proxyInstances, services)
+		inbound := configgen.buildSidecarInboundListeners(env, node, push, proxyInstances)
+		outbound := configgen.buildSidecarOutboundListeners(env, node, push, proxyInstances, services)
 
 		listeners = append(listeners, inbound...)
 		listeners = append(listeners, outbound...)
@@ -174,7 +170,6 @@ func (configgen *ConfigGeneratorImpl) buildSidecarListeners(env *model.Environme
 
 	// enable HTTP PROXY port if necessary; this will add an RDS route for this port
 	if mesh.ProxyHttpPort > 0 {
-		fmt.Printf("mesh.ProxyHttpPort=%d\n",mesh.ProxyHttpPort)
 		useRemoteAddress := false
 		traceOperation := http_conn.EGRESS
 		listenAddress := LocalhostAddress
@@ -222,7 +217,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarListeners(env *model.Environme
 
 // buildSidecarInboundListeners creates listeners for the server-side (inbound)
 // configuration for co-located service proxyInstances.
-func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.Environment, node *model.Proxy,
+func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.Environment, node *model.Proxy, push *model.PushContext,
 	proxyInstances []*model.ServiceInstance) []*xdsapi.Listener {
 
 	var listeners []*xdsapi.Listener
@@ -252,7 +247,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.En
 
 		for _, p := range configgen.Plugins {
 			if authnPolicy, ok := p.(authn.Plugin); ok {
-				if authnPolicy.RequireTLSMultiplexing(env.Mesh, env.IstioConfigStore, instance.Service.Hostname, instance.Endpoint.ServicePort) {
+				if authnPolicy.RequireTLSMultiplexing(env.Mesh, env.IstioConfigStore, instance.Service, instance.Endpoint.ServicePort) {
 					listenerOpts.tlsMultiplexed = true
 					log.Infof("Uses TLS multiplexing for %v %v\n", instance.Service.Hostname.String(), *instance.Endpoint.ServicePort)
 				}
@@ -261,7 +256,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.En
 
 		listenerMapKey := fmt.Sprintf("%s:%d", endpoint.Address, endpoint.Port)
 		if old, exists := listenerMap[listenerMapKey]; exists {
-			env.PushStatus.Add(model.ProxyStatusConflictInboundListener, node.ID, node,
+			push.Add(model.ProxyStatusConflictInboundListener, node.ID, node,
 				fmt.Sprintf("Rejected %s, used %s for %s", instance.Service.Hostname, old.Service.Hostname, listenerMapKey))
 			// Skip building listener for the same ip port
 			continue
@@ -270,7 +265,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.En
 		switch listenerType {
 		case plugin.ListenerProtocolHTTP:
 			httpOpts := &httpListenerOpts{
-				routeConfig:      configgen.buildSidecarInboundHTTPRouteConfig(env, node, instance),
+				routeConfig:      configgen.buildSidecarInboundHTTPRouteConfig(env, node, push, instance),
 				rds:              "", // no RDS for inbound traffic
 				useRemoteAddress: false,
 				direction:        http_conn.INGRESS,
@@ -309,7 +304,6 @@ func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.En
 			FilterChains: make([]plugin.FilterChain, len(l.FilterChains)),
 		}
 		for _, p := range configgen.Plugins {
-			log.Info("configgen.Plugins!!!!!!!!!!!!!!!!!")
 			params := &plugin.InputParams{
 				ListenerProtocol: listenerType,
 				Env:              env,
@@ -317,6 +311,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarInboundListeners(env *model.En
 				ProxyInstances:   proxyInstances,
 				ServiceInstance:  instance,
 				Port:             endpoint.ServicePort,
+				Push:             push,
 			}
 			if err := p.OnInboundListener(params, mutable); err != nil {
 				log.Warn(err.Error())
@@ -338,14 +333,6 @@ type listenerEntry struct {
 	services    []*model.Service
 	servicePort *model.Port
 	listener    *xdsapi.Listener
-}
-
-// sortServicesByCreationTime sorts the list of services in ascending order by their creation time (if available).
-func sortServicesByCreationTime(services []*model.Service) []*model.Service {
-	sort.SliceStable(services, func(i, j int) bool {
-		return services[i].CreationTime.Before(services[j].CreationTime)
-	})
-	return services
 }
 
 func protocolName(p model.Protocol) string {
@@ -370,13 +357,13 @@ type outboundListenerConflict struct {
 	newProtocol     model.Protocol
 }
 
-func (c outboundListenerConflict) addMetric() {
+func (c outboundListenerConflict) addMetric(push *model.PushContext) {
 	currentHostnames := make([]string, len(c.currentServices))
 	for i, s := range c.currentServices {
 		currentHostnames[i] = string(s.Hostname)
 	}
 	concatHostnames := strings.Join(currentHostnames, ",")
-	c.env.PushStatus.Add(c.metric,
+	push.Add(c.metric,
 		c.listenerName,
 		c.node,
 		fmt.Sprintf("Listener=%s Accepted%s=%s Rejected%s=%s %sServices=%d",
@@ -403,12 +390,8 @@ func (c outboundListenerConflict) addMetric() {
 // Connections to the ports of non-load balanced services are directed to
 // the connection's original destination. This avoids costly queries of instance
 // IPs and ports, but requires that ports of non-load balanced service be unique.
-func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.Environment, node *model.Proxy,
+func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.Environment, node *model.Proxy, push *model.PushContext,
 	proxyInstances []*model.ServiceInstance, services []*model.Service) []*xdsapi.Listener {
-
-	// Sort the services in order of creation.
-	services = sortServicesByCreationTime(services)
-	fmt.Printf("buildSidecarOutboundListeners services=%+v\n",services)
 
 	var proxyLabels model.LabelsCollection
 	for _, w := range proxyInstances {
@@ -416,16 +399,14 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 	}
 
 	meshGateway := map[string]bool{model.IstioMeshGateway: true}
-	configs := env.VirtualServices(meshGateway)
+	configs := push.VirtualServices(meshGateway)
 
 	var tcpListeners, httpListeners []*xdsapi.Listener
 	// For conflicit resolution
 	var currentListenerEntry *listenerEntry
 	listenerMap := make(map[string]*listenerEntry)
 	for _, service := range services {
-		fmt.Printf("service=%+v\n",service)
 		for _, servicePort := range service.Ports {
-			fmt.Printf("servicePort=%+v\n",*servicePort)
 			listenAddress := WildcardAddress
 			var destinationIPAddress string
 			var listenerMapKey string
@@ -438,7 +419,6 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 				protocol:       servicePort.Protocol,
 			}
 
-			fmt.Printf("listenerOpts=%+v\n",listenerOpts)
 			currentListenerEntry = nil
 
 			switch plugin.ModelProtocolToListenerProtocol(servicePort.Protocol) {
@@ -450,7 +430,6 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 				// a single 0.0.0.0:port listener and use vhosts to distinguish individual http
 				// services in that port
 				if currentListenerEntry, exists = listenerMap[listenerMapKey]; exists {
-					fmt.Printf("currentListenerEntry %v exists\n",currentListenerEntry)
 					if !currentListenerEntry.servicePort.Protocol.IsHTTP() {
 						outboundListenerConflict{
 							metric:          model.ProxyStatusConflictOutboundListenerTCPOverHTTP,
@@ -461,7 +440,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 							currentProtocol: currentListenerEntry.servicePort.Protocol,
 							newHostname:     service.Hostname,
 							newProtocol:     servicePort.Protocol,
-						}.addMetric()
+						}.addMetric(push)
 					}
 					// Skip building listener for the same http port
 					currentListenerEntry.services = append(currentListenerEntry.services, service)
@@ -479,8 +458,6 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 						direction:        operation,
 					},
 				}}
-
-				fmt.Printf("listenerOpts =%+v\n",listenerOpts)
 			case plugin.ListenerProtocolTCP:
 				// Determine the listener address
 				// we listen on the service VIP if and only
@@ -530,7 +507,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 							currentProtocol: currentListenerEntry.servicePort.Protocol,
 							newHostname:     service.Hostname,
 							newProtocol:     servicePort.Protocol,
-						}.addMetric()
+						}.addMetric(push)
 						continue
 					}
 					// WE have a collision with another TCP port.
@@ -541,7 +518,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 					// The conflict resolution is done later in this code
 				}
 
-				listenerOpts.filterChainOpts = buildSidecarOutboundTCPTLSFilterChainOpts(node, env, configs,
+				listenerOpts.filterChainOpts = buildSidecarOutboundTCPTLSFilterChainOpts(node, push, configs,
 					destinationIPAddress, service, servicePort, proxyLabels, meshGateway)
 			default:
 				// UDP or other protocols: no need to log, it's too noisy
@@ -567,6 +544,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 					ProxyInstances:   proxyInstances,
 					Service:          service,
 					Port:             servicePort,
+					Push:             push,
 				}
 
 				if err := p.OnOutboundListener(params, mutable); err != nil {
@@ -615,7 +593,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 									currentProtocol: currentListenerEntry.servicePort.Protocol,
 									newHostname:     service.Hostname,
 									newProtocol:     servicePort.Protocol,
-								}.addMetric()
+								}.addMetric(push)
 								break compareWithExisting
 							} else {
 								continue
@@ -637,7 +615,7 @@ func (configgen *ConfigGeneratorImpl) buildSidecarOutboundListeners(env *model.E
 								currentProtocol: currentListenerEntry.servicePort.Protocol,
 								newHostname:     service.Hostname,
 								newProtocol:     servicePort.Protocol,
-							}.addMetric()
+							}.addMetric(push)
 							break compareWithExisting
 						}
 					}

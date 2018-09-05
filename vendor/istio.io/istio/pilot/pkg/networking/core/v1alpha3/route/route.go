@@ -86,17 +86,17 @@ type VirtualHostWrapper struct {
 // services from the service registry. Services are indexed by FQDN hostnames.
 func BuildVirtualHostsFromConfigAndRegistry(
 	node *model.Proxy,
-	configStore model.IstioConfigStore,
+	push *model.PushContext,
 	serviceRegistry map[model.Hostname]*model.Service,
 	proxyLabels model.LabelsCollection) []VirtualHostWrapper {
 
 	out := make([]VirtualHostWrapper, 0)
 
 	meshGateway := map[string]bool{model.IstioMeshGateway: true}
-	virtualServices := configStore.VirtualServices(meshGateway)
+	virtualServices := push.VirtualServices(meshGateway)
 	// translate all virtual service configs into virtual hosts
 	for _, virtualService := range virtualServices {
-		wrappers := buildVirtualHostsForVirtualService(node, configStore, virtualService, serviceRegistry, proxyLabels, meshGateway)
+		wrappers := buildVirtualHostsForVirtualService(node, push, virtualService, serviceRegistry, proxyLabels, meshGateway)
 		if len(wrappers) == 0 {
 			// If none of the routes matched by source (i.e. proxyLabels), then discard this entire virtual service
 			continue
@@ -148,7 +148,6 @@ func separateVSHostsAndServices(virtualService model.Config,
 		// TODO: Optimize me. This is O(n2) or worse. Need to prune at top level in config
 		// Say we have services *.foo.global, *.bar.global
 		for svcHost, svc := range serviceRegistry {
-			fmt.Printf("vsHostname=%s svcHost=%s\n",vsHostname,svcHost)
 			// *.foo.global matches *.global
 			if svcHost.Matches(vsHostname) {
 				servicesInVirtualService = append(servicesInVirtualService, svc)
@@ -167,13 +166,12 @@ func separateVSHostsAndServices(virtualService model.Config,
 // It may return an empty list if no VirtualService rule has a matching service.
 func buildVirtualHostsForVirtualService(
 	node *model.Proxy,
-	configStore model.IstioConfigStore,
+	push *model.PushContext,
 	virtualService model.Config,
 	serviceRegistry map[model.Hostname]*model.Service,
 	proxyLabels model.LabelsCollection,
 	gatewayName map[string]bool) []VirtualHostWrapper {
 	hosts, servicesInVirtualService := separateVSHostsAndServices(virtualService, serviceRegistry)
-	fmt.Printf("hosts=%+v servicesInVirtualService=%+v\n",hosts,servicesInVirtualService)
 	// Now group these services by port so that we can infer the destination.port if the user
 	// doesn't specify any port for a multiport service. We need to know the destination port in
 	// order to build the cluster name (outbound|<port>|<subset>|<serviceFQDN>)
@@ -181,7 +179,6 @@ func buildVirtualHostsForVirtualService(
 	// destination port
 	serviceByPort := make(map[int][]*model.Service)
 	for _, svc := range servicesInVirtualService {
-		fmt.Printf("svc=%+v\n",svc)
 		for _, port := range svc.Ports {
 			if port.Protocol.IsHTTP() {
 				serviceByPort[port.Port] = append(serviceByPort[port.Port], svc)
@@ -189,7 +186,6 @@ func buildVirtualHostsForVirtualService(
 		}
 	}
 
-	fmt.Printf("serviceByPort=%+v\n",serviceByPort)
 	// We need to group the virtual hosts by port, because each http connection manager is
 	// going to send a separate RDS request
 	// Note that we need to build non-default HTTP routes only for the virtual services.
@@ -201,7 +197,7 @@ func buildVirtualHostsForVirtualService(
 	}
 	out := make([]VirtualHostWrapper, 0, len(serviceByPort))
 	for port, portServices := range serviceByPort {
-		routes, err := BuildHTTPRoutesForVirtualService(node, virtualService, serviceRegistry, port, proxyLabels, gatewayName, configStore)
+		routes, err := BuildHTTPRoutesForVirtualService(node, push, virtualService, serviceRegistry, port, proxyLabels, gatewayName)
 		if err != nil || len(routes) == 0 {
 			continue
 		}
@@ -211,7 +207,6 @@ func buildVirtualHostsForVirtualService(
 			VirtualServiceHosts: hosts,
 			Routes:              routes,
 		})
-		fmt.Printf("hosts=%s\n",hosts)
 	}
 
 	return out
@@ -249,12 +244,12 @@ func GetDestinationCluster(destination *networking.Destination, service *model.S
 // Error indicates the given virtualService can't be used on the port.
 func BuildHTTPRoutesForVirtualService(
 	node *model.Proxy,
+	push *model.PushContext,
 	virtualService model.Config,
 	serviceRegistry map[model.Hostname]*model.Service,
 	port int,
 	proxyLabels model.LabelsCollection,
-	gatewayNames map[string]bool,
-	configStore model.IstioConfigStore) ([]route.Route, error) {
+	gatewayNames map[string]bool) ([]route.Route, error) {
 
 	vs, ok := virtualService.Spec.(*networking.VirtualService)
 	if !ok { // should never happen
@@ -264,20 +259,23 @@ func BuildHTTPRoutesForVirtualService(
 	vsName := virtualService.ConfigMeta.Name
 
 	out := make([]route.Route, 0, len(vs.Http))
+allroutes:
 	for _, http := range vs.Http {
 		if len(http.Match) == 0 {
-			if r := translateRoute(node, http, nil, port, vsName, serviceRegistry, proxyLabels, gatewayNames, configStore); r != nil {
+			if r := translateRoute(push, node, http, nil, port, vsName, serviceRegistry, proxyLabels, gatewayNames); r != nil {
 				out = append(out, *r)
 			}
-			break // we have a rule with catch all match prefix: /. Other rules are of no use
+			break allroutes // we have a rule with catch all match prefix: /. Other rules are of no use
 		} else {
-			// TODO: https://github.com/istio/istio/issues/4239
 			for _, match := range http.Match {
-				if r := translateRoute(node, http, match, port, vsName, serviceRegistry, proxyLabels, gatewayNames, configStore); r != nil {
+				if r := translateRoute(push, node, http, match, port, vsName, serviceRegistry, proxyLabels, gatewayNames); r != nil {
 					out = append(out, *r)
-					fmt.Printf("good match =%s http.Match=%s\n",match.Uri,*r)
+					rType, _ := getEnvoyRouteTypeAndVal(r)
+					if rType == envoyCatchAll {
+						// We have a catch all route. No point building other routes, with match conditions
+						break allroutes
+					}
 				}
-
 			}
 		}
 	}
@@ -310,13 +308,12 @@ func sourceMatchHTTP(match *networking.HTTPMatchRequest, proxyLabels model.Label
 }
 
 // translateRoute translates HTTP routes
-func translateRoute(node *model.Proxy, in *networking.HTTPRoute,
+func translateRoute(push *model.PushContext, node *model.Proxy, in *networking.HTTPRoute,
 	match *networking.HTTPMatchRequest, port int,
 	vsName string,
 	serviceRegistry map[model.Hostname]*model.Service,
 	proxyLabels model.LabelsCollection,
-	gatewayNames map[string]bool,
-	configStore model.IstioConfigStore) *route.Route {
+	gatewayNames map[string]bool) *route.Route {
 
 	// When building routes, its okay if the target cluster cannot be
 	// resolved Traffic to such clusters will blackhole.
@@ -419,7 +416,7 @@ func translateRoute(node *model.Proxy, in *networking.HTTPRoute,
 				Weight: weight,
 			})
 
-			hashPolicy := getHashPolicy(configStore, dst)
+			hashPolicy := getHashPolicy(push, dst)
 			if hashPolicy != nil {
 				action.HashPolicy = append(action.HashPolicy, hashPolicy)
 			}
@@ -672,13 +669,13 @@ func portLevelSettingsConsistentHash(dst *networking.Destination,
 	return nil
 }
 
-func getHashPolicy(configStore model.IstioConfigStore, dst *networking.DestinationWeight) *route.RouteAction_HashPolicy {
-	if configStore == nil {
+func getHashPolicy(push *model.PushContext, dst *networking.DestinationWeight) *route.RouteAction_HashPolicy {
+	if push == nil {
 		return nil
 	}
 
 	destination := dst.GetDestination()
-	destinationRule := configStore.DestinationRule(model.Hostname(destination.GetHost()))
+	destinationRule := push.DestinationRule(model.Hostname(destination.GetHost()))
 	if destinationRule == nil {
 		return nil
 	}
@@ -740,4 +737,72 @@ func getHashPolicy(configStore model.IstioConfigStore, dst *networking.Destinati
 	}
 
 	return nil
+}
+
+type envoyRouteType int
+
+const (
+	envoyPath envoyRouteType = iota
+	envoyPrefix
+	envoyRegex
+	envoyCatchAll
+)
+
+func getEnvoyRouteTypeAndVal(r *route.Route) (envoyRouteType, string) {
+	var iType envoyRouteType
+	var iVal string
+
+	switch iR := r.Match.PathSpecifier.(type) {
+	case *route.RouteMatch_Path:
+		iVal = iR.Path
+		iType = envoyPath
+	case *route.RouteMatch_Prefix:
+		iVal = iR.Prefix
+		iType = envoyPrefix
+	case *route.RouteMatch_Regex:
+		iVal = iR.Regex
+		iType = envoyRegex
+	}
+
+	// A route is catch all if and only if it has no header/query param match
+	// and has a prefix / or regex *.
+	if (iVal == "/" && iType == envoyPrefix) || (iVal == "*" && iType == envoyRegex) {
+		if len(r.Match.Headers) == 0 && len(r.Match.QueryParameters) == 0 {
+			iType = envoyCatchAll
+		}
+	}
+	return iType, iVal
+}
+
+// CombineVHostRoutes semi concatenates two Vhost's routes into a single route set.
+// Moves the catch all routes alone to the end, while retaining
+// the relative order of other routes in the concatenated route.
+// Assumes that the virtual services that generated first and second are ordered by
+// time.
+func CombineVHostRoutes(first []route.Route, second []route.Route) []route.Route {
+	allroutes := make([]route.Route, 0, len(first)+len(second))
+	catchAllRoutes := make([]route.Route, 0)
+
+	for _, f := range first {
+		rType, _ := getEnvoyRouteTypeAndVal(&f)
+		switch rType {
+		case envoyCatchAll:
+			catchAllRoutes = append(catchAllRoutes, f)
+		default:
+			allroutes = append(allroutes, f)
+		}
+	}
+
+	for _, s := range second {
+		rType, _ := getEnvoyRouteTypeAndVal(&s)
+		switch rType {
+		case envoyCatchAll:
+			catchAllRoutes = append(catchAllRoutes, s)
+		default:
+			allroutes = append(allroutes, s)
+		}
+	}
+
+	allroutes = append(allroutes, catchAllRoutes...)
+	return allroutes
 }

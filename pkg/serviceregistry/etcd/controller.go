@@ -110,7 +110,7 @@ func (c *Controller) Instances(hostname model.Hostname, ports []string,
 // any of the supplied labels. All instances match an empty tag list.
 func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 	labelsList model.LabelsCollection) ([]*model.ServiceInstance, error) {
-	fmt.Printf("InstancesByPort hostname=%s reqSvcPort=%d labelsList=%s", hostname, reqSvcPort, labelsList)
+	fmt.Printf("\nInstancesByPort hostname=%s reqSvcPort=%d labelsList=%s\n", hostname, reqSvcPort, labelsList)
 	name, namespace := parseHostname(hostname)
 
 	var service *pb.Service
@@ -139,10 +139,9 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 			if node == nil {
 				return nil, fmt.Errorf("no found node. NodeId=%s", ep.NodeId)
 			}
-			//if !labelsList.HasSubsetOf(node.Labels) {
-			//	continue
-			//}
-			// identify the port by name. K8S EndpointPort uses the service port name
+			if !labelsList.HasSubsetOf(ep.Labels) {
+				continue
+			}
 
 			if svcPortEntry.Name == ep.Port.Name {
 				out = append(out, &model.ServiceInstance{
@@ -155,6 +154,7 @@ func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 					Labels:           map[string]string{"version": ep.ServiceVersion},
 					AvailabilityZone: node.Az,
 				})
+				fmt.Printf("")
 			}
 
 		}

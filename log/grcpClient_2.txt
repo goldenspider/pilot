@@ -1,0 +1,73 @@
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client
+dial by 127.0.0.1:15001
+2018/09/05 11:29:14 Greeting: Hello alpha world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client
+dial by 127.0.0.1:15001
+2018/09/05 11:29:16 Greeting: Hello alpha world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client
+dial by 127.0.0.1:15001
+2018/09/05 11:29:17 Greeting: Hello alpha world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ 
+
+
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:28 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:30 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:31 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:32 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:33 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:34 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:35 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:38 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:39 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:41 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:42 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:43 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:44 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:45 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:46 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:47 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:47 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:48 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:49 Greeting: Hello 1world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$ ./greeter_client_old 
+dial by 127.0.0.1:15001
+2018/09/05 11:29:50 Greeting: Hello world
+spider@lv:~/work/src/google.golang.org/grpc/examples/helloworld/greeter_client$

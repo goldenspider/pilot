@@ -39,8 +39,8 @@ var Services []*pb.Service = []*pb.Service{
 
 var Nodes []*pb.Node = []*pb.Node{
 	&pb.Node{
-		Id: "192-168-170-138",
-		Ip: "192.168.170.138",
+		Id: "192-168-170-139",
+		Ip: "192.168.170.139",
 		Az: "sh02",
 	},
 	&pb.Node{
@@ -54,12 +54,13 @@ var Endpoints []pb.Instance = []pb.Instance{
 	{
 		ServiceId:      "hello_server.ns-a",
 		ServiceVersion: "v1",
-		NodeId:         "192-168-170-138",
+		NodeId:         "192-168-170-139",
 		Port: &pb.Port{
 			Name:     "grpc",
 			Port:     50051,
 			Protocol: string(convertProtocol("grpc")),
 		},
+		Labels: convertLabels([]string{"version|v1"}),
 	},
 	{
 		ServiceId:      "hello_server.ns-a",
@@ -70,16 +71,18 @@ var Endpoints []pb.Instance = []pb.Instance{
 			Port:     50051,
 			Protocol: string(convertProtocol("grpc")),
 		},
+		Labels: convertLabels([]string{"version|v2"}),
 	},
 	{
 		ServiceId:      "hello_server_alpha.ns-a",
 		ServiceVersion: "v1",
-		NodeId:         "192-168-170-138",
+		NodeId:         "192-168-170-139",
 		Port: &pb.Port{
 			Name:     "grpc",
 			Port:     50052,
 			Protocol: string(convertProtocol("grpc")),
 		},
+		Labels: convertLabels([]string{"version|v1"}),
 	},
 }
 var vsdata string = `kind: VirtualService
