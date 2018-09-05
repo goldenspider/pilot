@@ -46,7 +46,7 @@ func NewDataSource(l *zap.SugaredLogger, c *etcd.Client) *DataSource {
 	return &DataSource{SugaredLogger: l.Named("DataSource"), Client: c}
 }
 
-func (m *DataSource) initRouter(r *gin.RouterGroup, path string, o interface{}) error {
+func (m *DataSource) InitRouter(r *gin.RouterGroup, path string, o interface{}) error {
 	r.GET(path, func(c *gin.Context) {
 		instances, e := m.List(fmt.Sprintf("%s/", path), o)
 		if e != nil {

@@ -29,11 +29,11 @@ func NewInstanceManager(l *zap.SugaredLogger, client *Client, ds *DataSource, nd
 }
 
 func InstaceId(inst *pb.Instance) string {
-	return fmt.Sprintf("%s-%s-%s", inst.ServiceId, inst.ServiceVersion, inst.NodeId)
+	return fmt.Sprintf("%s~%s~%s:%d", inst.ServiceId, inst.ServiceVersion, inst.NodeId, inst.Port.Port)
 }
 
 func (c *InstanceManager) InstaceId(inst *pb.Instance) string {
-	return fmt.Sprintf("%s-%s-%s", inst.ServiceId, inst.ServiceVersion, inst.NodeId)
+	return fmt.Sprintf("%s~%s~%s:%d", inst.ServiceId, inst.ServiceVersion, inst.NodeId, inst.Port.Port)
 }
 
 func (c *InstanceManager) PutInstance(obj *model.ServiceInstance) error {
@@ -84,6 +84,7 @@ func (c *InstanceManager) FindInstanceByServiceInstance(svcinst *model.ServiceIn
 		ServiceId:      string(svcinst.Service.Hostname),
 		ServiceVersion: version,
 		NodeId:         node.Id,
+		Port:           convertPbPort(svcinst.Endpoint.Port, svcinst.Endpoint.ServicePort.Name),
 	}
 
 	inst.Id = c.InstaceId(inst)

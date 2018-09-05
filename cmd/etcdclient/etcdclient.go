@@ -3,32 +3,27 @@ package main
 import (
 	"fmt"
 	"github.com/coreos/etcd/clientv3"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"istio.io/istio/pilot/pkg/model"
+	"net/http"
+	"os"
+	"os/signal"
 	m "pilot/manager/etcd"
 	pb "pilot/pkg/proto/etcd"
 	"strings"
+	"syscall"
 )
 
 type manager struct {
+	*zap.SugaredLogger
 	*m.Client
-	ds *m.DataSource
-	sv *m.ServiceManager
-	ep *m.InstanceManager
-	nd *m.NodeManager
-	cs *m.ClusterManager
-}
-
-func NewManager(l *zap.SugaredLogger, cli *clientv3.Client, sv *m.ServiceManager, ds *m.DataSource, nd *m.NodeManager, ep *m.InstanceManager, cs *m.ClusterManager) *manager {
-	return &manager{
-		Client: m.NewClient(l.Named("manager"), cli, "/pilot", "/ns"),
-		sv:     sv,
-		ds:     ds,
-		nd:     nd,
-		ep:     ep,
-		cs:     cs,
-	}
-
+	Http *http.Server
+	ds   *m.DataSource
+	sv   *m.ServiceManager
+	ep   *m.InstanceManager
+	nd   *m.NodeManager
+	cs   *m.ClusterManager
 }
 
 func convertProtocol(name string) model.Protocol {
@@ -117,13 +112,6 @@ var Endpoints []*pb.Instance = []*pb.Instance{
 	},
 }
 
-// type Cluster struct {
-//	Id                   string
-//	ServiceId            string
-//	InstanceIds          map[string]string
-//	Labels               map[string]string
-//}
-
 var Clusters []*pb.Cluster = []*pb.Cluster{
 	&pb.Cluster{
 		Id: "hello_s1",
@@ -151,13 +139,13 @@ func convertLabels(labels []string) model.Labels {
 	return out
 }
 
-func main() {
+func NewManager() *manager {
 	var cfg clientv3.Config
 	cfg.Endpoints = strings.Split("127.0.0.1:2379", ",")
 	cli, err := clientv3.New(cfg)
 	if err != nil {
 		fmt.Printf("failed to open a etcd client. %s", err)
-		return
+		return nil
 	}
 
 	l, _ := zap.NewDevelopment()
@@ -173,42 +161,99 @@ func main() {
 	ep := m.NewInstanceManager(l.Sugar(), client, ds, nd)
 	cs := m.NewClusterManager(l.Sugar(), client, ds, nd, sv, ep)
 
-	sm := NewManager(l.Sugar(), cli, sv, ds, nd, ep, cs)
+	m := &manager{
+		SugaredLogger: l.Sugar().Named("manager"),
+		Client:        client,
+		ds:            ds,
+		sv:            sv,
+		nd:            nd,
+		ep:            ep,
+		cs:            cs,
+	}
+
+	m.Http = &http.Server{}
+	m.Http.Handler = m.initRouter()
+
+	return m
+
+}
+
+func (m *manager) initRouter() http.Handler {
+	r := gin.Default()
+	r.Use(gin.ErrorLogger())
+	s := r.Group("/etcd/api")
+
+	if e := m.nd.InitRouter(s); e != nil {
+		m.Panicf("failed to init router of nodes. err = %v", e)
+	}
+
+	if e := m.sv.InitRouter(s); e != nil {
+		m.Panicf("failed to init router of services. err = %v", e)
+	}
+
+	if e := m.cs.InitRouter(s); e != nil {
+		m.Panicf("failed to init router of sets. err = %v", e)
+	}
+
+	return r
+}
+
+func main() {
+	exit := make(chan os.Signal, 10)
+	signal.Notify(exit, syscall.SIGINT, syscall.SIGTERM)
+
+	m := NewManager()
+	if m == nil {
+		return
+	}
 
 	//name = /ns/bfcheck/bfcheck-s1/172.28.217.219:8010
-	sm.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.140:50051", "")
-	sm.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.1:50051", "")
-	sm.ds.Put("/ns/hello_server_alpha.ns-a/hello_s1/192.168.170.140:50052", "")
+	m.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.140:50051", "")
+	m.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.1:50051", "")
+	m.ds.Put("/ns/hello_server_alpha.ns-a/hello_s1/192.168.170.140:50052", "")
 
 	for _, node := range Nodes {
-		e := sm.nd.PutNode(node)
+		e := m.nd.PutNode(node)
 		if e != nil {
 			fmt.Println(e)
 		}
 	}
 	//////////////////
-	sm.cs.Put(Clusters[0])
+	m.cs.Put(Clusters[0])
 
-	e := sm.cs.PutService(Clusters[0].Id, Services[0])
+	e := m.cs.PutService(Clusters[0].Id, Services[0])
 	if e != nil {
 		fmt.Println(e)
 	}
 
-	e = sm.cs.PutServiceInstance(Clusters[0].Id, "hello_server.ns-a", Endpoints)
+	e = m.cs.PutServiceInstance(Clusters[0].Id, "hello_server.ns-a", Endpoints)
 	if e != nil {
 		fmt.Println(e)
 	}
 
 	//////////////////
-	sm.cs.Put(Clusters[1])
+	m.cs.Put(Clusters[1])
 
-	e = sm.cs.PutService(Clusters[1].Id, Services[1])
+	e = m.cs.PutService(Clusters[1].Id, Services[1])
 	if e != nil {
 		fmt.Println(e)
 	}
 
-	e = sm.cs.PutServiceInstance(Clusters[1].Id, "hello_server_alpha.ns-a", Endpoints)
+	e = m.cs.PutServiceInstance(Clusters[1].Id, "hello_server_alpha.ns-a", Endpoints)
 	if e != nil {
 		fmt.Println(e)
 	}
+	//////////////////
+	m.Http.Addr = "0.0.0.0:8080"
+	go func() {
+		fmt.Printf("The HTTP server is listen at %s", m.Http.Addr)
+		if e := m.Http.ListenAndServe(); e != nil {
+			fmt.Errorf("failed to listen and serve http server. %s", zap.Error(e))
+		}
+		fmt.Println("The HTTP server is exited.")
+	}()
+	fmt.Println("HTTP server is started.")
+
+	sig := <-exit
+	m.Info("get signal.", zap.String("Signal", sig.String()))
 }

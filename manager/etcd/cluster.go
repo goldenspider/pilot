@@ -22,7 +22,7 @@ func NewClusterManager(l *zap.SugaredLogger, client *Client, ds *DataSource, nd 
 	return &ClusterManager{SugaredLogger: l.Named("ClusterManager"), Client: client, ds: ds, nd: nd, sv: sv, ep: ep}
 }
 
-func (m *ClusterManager) initRouter(r *gin.RouterGroup) error {
+func (m *ClusterManager) InitRouter(r *gin.RouterGroup) error {
 	s := &pb.Cluster{}
 
 	r.GET("/clusters", func(c *gin.Context) {
@@ -263,6 +263,10 @@ func (m *ClusterManager) putServiceInstance(cluster *pb.Cluster, inst *pb.Instan
 		return e
 	}
 
+	if inst.Id == "" {
+		inst.Id = InstaceId(inst)
+	}
+
 	instKey := fmt.Sprintf("/instances/%s", inst.Id)
 	if e := m.ds.Put(instKey, inst); e != nil {
 		return errors.Wrapf(e, "写入Instance(%s)失败", inst.Id)
@@ -301,13 +305,6 @@ func (m *ClusterManager) PutServiceInstance(clusterId string, sid string, insts 
 
 	if e := m.syncServiceInstance(cluster, insts); e != nil {
 		return e
-	}
-
-	for _, inst := range insts {
-		if cluster.InstanceIds == nil {
-			cluster.InstanceIds = make(map[string]string)
-		}
-		cluster.InstanceIds[inst.Id] = ""
 	}
 
 	return m.Put(cluster)
@@ -423,6 +420,16 @@ func (m *ClusterManager) syncServiceInstance(cluster *pb.Cluster, insts []*pb.In
 					cluster.Id, inst.ServiceId, node, e)
 				continue
 			}
+
+			if cluster.InstanceIds == nil {
+				cluster.InstanceIds = make(map[string]string)
+			}
+
+			if inst.Id == "" {
+				inst.Id = InstaceId(inst)
+			}
+			cluster.InstanceIds[inst.Id] = ""
+
 		}
 	}
 
@@ -433,6 +440,17 @@ func (m *ClusterManager) syncServiceInstance(cluster *pb.Cluster, insts []*pb.In
 				instance.Labels["cluster"], instance.Service, instance.Endpoint.Address, e)
 			continue
 		}
+
+		if cluster.InstanceIds == nil {
+			cluster.InstanceIds = make(map[string]string)
+			continue
+		}
+
+		inst := m.ep.FindInstanceByServiceInstance(instance)
+		if inst.Id == "" {
+			inst.Id = InstaceId(inst)
+		}
+		delete(cluster.InstanceIds, inst.Id)
 	}
 
 	return nil

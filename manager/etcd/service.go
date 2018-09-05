@@ -2,6 +2,8 @@ package etcd
 
 import (
 	"context"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	"go.uber.org/zap"
 	pb "pilot/pkg/proto/etcd"
@@ -16,6 +18,45 @@ type ServiceManager struct {
 
 func NewServiceManager(l *zap.SugaredLogger, ds *DataSource, client *Client) *ServiceManager {
 	return &ServiceManager{SugaredLogger: l.Named("ServiceManager"), ds: ds, Client: client}
+}
+
+func (m *ServiceManager) InitRouter(r *gin.RouterGroup) error {
+	s := &pb.Service{}
+
+	r.GET("/services", func(c *gin.Context) {
+		key := fmt.Sprintf("/services/")
+
+		objs, e := m.ds.List(key, s)
+		if e != nil {
+			AbortWithError(m.SugaredLogger, c, e)
+			return
+		}
+		c.JSON(200, objs)
+	})
+
+	r.GET("/services/:service", func(c *gin.Context) {
+		service := c.Params.ByName("service")
+		key := fmt.Sprintf("/services/%s", service)
+
+		if e := m.ds.Get(key, s); e != nil {
+			AbortWithError(m.SugaredLogger, c, e)
+			return
+		}
+		c.JSON(200, s)
+	})
+
+	r.PUT("/services/:service", func(c *gin.Context) {
+		//o := &pb.Service{}
+		//c.BindJSON(o)
+		//
+		//if e := m.Put(o); e != nil {
+		//	AbortWithError(m.SugaredLogger, c, e)
+		//	return
+		//}
+		c.JSON(200, struct{}{})
+	})
+
+	return nil
 }
 
 func (c *ServiceManager) PutService(service *pb.Service) error {

@@ -16,9 +16,9 @@ func NewNodeManager(l *zap.SugaredLogger, ds *DataSource) *NodeManager {
 	return &NodeManager{SugaredLogger: l.Named("NodeManager"), ds: ds}
 }
 
-func (m *NodeManager) initRouter(r *gin.RouterGroup) error {
+func (m *NodeManager) InitRouter(r *gin.RouterGroup) error {
 	n := &pb.Node{}
-	if e := m.ds.initRouter(r, "/nodes", n); e != nil {
+	if e := m.ds.InitRouter(r, "/nodes", n); e != nil {
 		return e
 	}
 

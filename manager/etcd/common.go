@@ -81,6 +81,15 @@ func convertPort(port int, name string) *model.Port {
 	}
 }
 
+func convertPbPort(port int, name string) *pb.Port {
+	pt := convertPort(port, name)
+	return &pb.Port{
+		Name:     pt.Name,
+		Port:     uint32(pt.Port),
+		Protocol: string(convertProtocol(pt.Name)),
+	}
+}
+
 func convertProtocol(name string) model.Protocol {
 	protocol := model.ParseProtocol(name)
 	if protocol == model.ProtocolUnsupported {
