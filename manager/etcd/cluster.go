@@ -18,8 +18,8 @@ type ClusterManager struct {
 	ep *InstanceManager
 }
 
-func NewClusterManager(l *zap.SugaredLogger, client *Client, ds *DataSource, nd *NodeManager, ep *InstanceManager) *ClusterManager {
-	return &ClusterManager{SugaredLogger: l.Named("ClusterManager"), Client: client, ds: ds, nd: nd, ep: ep}
+func NewClusterManager(l *zap.SugaredLogger, client *Client, ds *DataSource, nd *NodeManager, sv *ServiceManager, ep *InstanceManager) *ClusterManager {
+	return &ClusterManager{SugaredLogger: l.Named("ClusterManager"), Client: client, ds: ds, nd: nd, sv: sv, ep: ep}
 }
 
 func (m *ClusterManager) initRouter(r *gin.RouterGroup) error {
@@ -253,7 +253,7 @@ func (m *ClusterManager) buildServiceInstance(cluster *pb.Cluster, inst *pb.Inst
 	for k, v := range inst.Labels {
 		instance.Labels[k] = v
 	}
-
+	fmt.Printf("buildServiceInstance ok:%+v\n", *instance)
 	return instance, nil
 }
 
@@ -304,6 +304,9 @@ func (m *ClusterManager) PutServiceInstance(clusterId string, sid string, insts 
 	}
 
 	for _, inst := range insts {
+		if cluster.InstanceIds == nil {
+			cluster.InstanceIds = make(map[string]string)
+		}
 		cluster.InstanceIds[inst.Id] = ""
 	}
 
@@ -390,7 +393,7 @@ func (m *ClusterManager) DeleteInstance(clusterId string, instanceId string) err
 }
 
 func (m *ClusterManager) syncServiceInstance(cluster *pb.Cluster, insts []*pb.Instance) error {
-	instances, e := m.ep.GetInstances(cluster.ServiceId)
+	instances, e := m.Client.GetInstances(cluster.ServiceId)
 	if e != nil {
 		return errors.Wrapf(e, "查询pilot中service-%s的instance失败. cluster = %s, service = %s", cluster.Id, cluster.ServiceId)
 	}

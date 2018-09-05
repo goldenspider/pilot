@@ -1,0 +1,209 @@
+$ ./etcdclient.exe
+2018-09-05T09:18:24.503335Z     info    parsed scheme: ""
+2018-09-05T09:18:24.503335Z     info    scheme "" not registered, fallback to default scheme
+2018-09-05T09:18:24.504335Z     info    ccResolverWrapper: sending new addresses to cc: [{127.0.0.1:2379 0  <nil>}]
+2018-09-05T09:18:24.504335Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-09-05T09:18:24.506336Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-09-05T17:18:24.504+0800    INFO    glog/glog.go:80 write object to /ns/hello_server.ns-a/hello_s1/192.168.170.140:50051. obj = "", value = ""
+2018-09-05T17:18:24.541+0800    INFO    glog/glog.go:80 write object to /ns/hello_server.ns-a/hello_s1/192.168.170.1:50051. obj = "", value = ""
+2018-09-05T17:18:24.543+0800    INFO    glog/glog.go:80 write object to /ns/hello_server_alpha.ns-a/hello_s1/192.168.170.140:50052. obj = "", value = ""
+2018-09-05T17:18:24.546+0800    INFO    glog/glog.go:80 write object to /nodes/192-168-170-140. obj = &etcd.Node{Id:"192-168-170-140", Ip:"192.168.170.140", Az:"sh02", Users:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"192-168-170-140","Ip":"192.168.170.140","Az":"sh02"}
+2018-09-05T17:18:24.547+0800    INFO    glog/glog.go:80 write object to /nodes/192-168-170-1. obj = &etcd.Node{Id:"192-168-170-1", Ip:"192.168.170.1", Az:"sh02", Users:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"192-168-170-1","Ip":"192.168.170.1","Az":"sh02"}
+2018-09-05T17:18:24.549+0800    INFO    glog/glog.go:80 write object to /clusters/hello_s1. obj = &etcd.Cluster{Id:"hello_s1", ServiceId:"", InstanceIds:map[string]string(nil), Labels:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_s1"}
+2018-09-05T17:18:24.551+0800    INFO    glog/glog.go:80 put service, service = &etcd.Service{Id:"hello_server.ns-a", Name:"hello_server", Namespace:"ns-a", Version:map[string]string{"v1":"test1", "v2":"test2"}, Ports:[]*etcd.Port{(*etcd.Port)(0x202aca0)}, MeshExternal:false, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
+2018-09-05T17:18:24.552+0800    INFO    glog/glog.go:80 put service, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+%!(EXTRA *model.Service=&{hello_server.ns-a 0.0.0.0 map[] [0xc04248c1e0]  [] false false 0 0001-01-01 00:00:00 +0000 UTC {  }})
+2018-09-05T17:18:24.552+0800    INFO    glog/glog.go:80 write object to /services/hello_server.ns-a. obj = &etcd.Service{Id:"hello_server.ns-a", Name:"hello_server", Namespace:"ns-a", Version:map[string]string{"v1":"test1", "v2":"test2"}, Ports:[]*etcd.Port{(*etcd.Port)(0x202aca0)}, MeshExternal:false, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_server.ns-a","Name":"hello_server","Namespace":"ns-a","Version":{"v1":"test1","v2":"test2"},"Ports":[{"Name":"grpc","Port":15001,"Protocol":"GRPC"}]}
+2018-09-05T17:18:24.553+0800    INFO    glog/glog.go:80 write object to /clusters/hello_s1. obj = &etcd.Cluster{Id:"hello_s1", ServiceId:"hello_server.ns-a", InstanceIds:map[string]string(nil), Labels:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_s1","ServiceId":"hello_server.ns-a"}
+2018-09-05T17:18:24.555+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server.ns-a
+2018-09-05T17:18:24.555+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a
+2018-09-05T17:18:24.556+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc042265500)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:24.556+0800    INFO    Client  etcd/client.go:235      get instances, online = map[192.168.170.140:50051:50051 hello_s1/192.168.170.140:50051 192.168.170.1:50051:50051 hello_s1/192.168.170.1:50051]
+buildServiceInstance ok:{Endpoint:{Family:tcp Address:192.168.170.140 Port:50051 ServicePort:0xc04248cd80 UID:} Service:0xc0421d8300 Labels:cluster=hello_s1,version=v1 AvailabilityZone:sh02 ServiceAccount:}
+2018-09-05T17:18:24.558+0800    INFO    glog/glog.go:80 write object to /instances/. obj = &etcd.Instance{Id:"", ServiceId:"hello_server.ns-a", ServiceVersion:"v1", NodeId:"192-168-170-140", Port:(*etcd.Port)(0x202ab80), Labels:map[string]string{"version":"v1"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"ServiceId":"hello_server.ns-a","ServiceVersion":"v1","NodeId":"192-168-170-140","Port":{"Name":"grpc","Port":50051,"Protocol":"GRPC"},"Labels":{"version":"v1"}}
+2018-09-05T17:18:24.558+0800    INFO    InstanceManager etcd/instance.go:40     put instance, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50051, ServicePort:(*model.Port)(0xc04248cd80), UID:""}, Service:(*model.Service)(0xc0421d8300), Labels:model.Labels{"cluster":"hello_s1", "version":"v1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T17:18:24.561+0800    INFO    InstanceManager etcd/instance.go:56     put instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.140:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+
+buildServiceInstance ok:{Endpoint:{Family:tcp Address:192.168.170.1 Port:50051 ServicePort:0xc042265bf0 UID:} Service:0xc042382240 Labels:cluster=hello_s1,version=v2 AvailabilityZone:sh02 ServiceAccount:}
+2018-09-05T17:18:24.568+0800    INFO    glog/glog.go:80 write object to /instances/. obj = &etcd.Instance{Id:"", ServiceId:"hello_server.ns-a", ServiceVersion:"v2", NodeId:"192-168-170-1", Port:(*etcd.Port)(0x202abe0), Labels:map[string]string{"version":"v2"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"ServiceId":"hello_server.ns-a","ServiceVersion":"v2","NodeId":"192-168-170-1","Port":{"Name":"grpc","Port":50051,"Protocol":"GRPC"},"Labels":{"version":"v2"}}
+2018-09-05T17:18:24.568+0800    INFO    InstanceManager etcd/instance.go:40     put instance, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.1", Port:50051, ServicePort:(*model.Port)(0xc042265bf0), UID:""}, Service:(*model.Service)(0xc042382240), Labels:model.Labels{"version":"v2", "cluster":"hello_s1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T17:18:24.569+0800    INFO    InstanceManager etcd/instance.go:56     put instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.1:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.1
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v2
+availabilityzone: sh02
+serviceaccount: ""
+
+2018-09-05T17:18:24.569+0800    INFO    glog/glog.go:80 write object to /clusters/hello_s1. obj = &etcd.Cluster{Id:"hello_s1", ServiceId:"hello_server.ns-a", InstanceIds:map[string]string{"":""}, Labels:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_s1","ServiceId":"hello_server.ns-a","InstanceIds":{"":""}}
+2018-09-05T17:18:24.570+0800    INFO    glog/glog.go:80 write object to /clusters/hello_s2. obj = &etcd.Cluster{Id:"hello_s2", ServiceId:"", InstanceIds:map[string]string(nil), Labels:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_s2"}
+2018-09-05T17:18:24.571+0800    INFO    glog/glog.go:80 put service, service = &etcd.Service{Id:"hello_server_alpha.ns-a", Name:"hello_server_alpha", Namespace:"ns-a", Version:map[string]string{"v1":""}, Ports:[]*etcd.Port{(*etcd.Port)(0x202ad00)}, MeshExternal:false, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
+2018-09-05T17:18:24.572+0800    INFO    glog/glog.go:80 put service, key = /pilot/services/hello_server_alpha.ns-a, value = hostname: hello_server_alpha.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+%!(EXTRA *model.Service=&{hello_server_alpha.ns-a 0.0.0.0 map[] [0xc04248dec0]  [] false false 0 0001-01-01 00:00:00 +0000 UTC {  }})
+2018-09-05T17:18:24.572+0800    INFO    glog/glog.go:80 write object to /services/hello_server_alpha.ns-a. obj = &etcd.Service{Id:"hello_server_alpha.ns-a", Name:"hello_server_alpha", Namespace:"ns-a", Version:map[string]string{"v1":""}, Ports:[]*etcd.Port{(*etcd.Port)(0x202ad00)}, MeshExternal:false, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_server_alpha.ns-a","Name":"hello_server_alpha","Namespace":"ns-a","Version":{"v1":""},"Ports":[{"Name":"grpc","Port":15001,"Protocol":"GRPC"}]}
+2018-09-05T17:18:24.573+0800    INFO    glog/glog.go:80 write object to /clusters/hello_s2. obj = &etcd.Cluster{Id:"hello_s2", ServiceId:"hello_server_alpha.ns-a", InstanceIds:map[string]string(nil), Labels:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_s2","ServiceId":"hello_server_alpha.ns-a"}
+2018-09-05T17:18:24.574+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:24.574+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:24.575+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a, key = /pilot/services/hello_server_alpha.ns-a, value = hostname: hello_server_alpha.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server_alpha.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc0422d45a0)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:24.575+0800    INFO    Client  etcd/client.go:235      get instances, online = map[192.168.170.140:50052:50052 hello_s1/192.168.170.140:50052]
+buildServiceInstance ok:{Endpoint:{Family:tcp Address:192.168.170.140 Port:50052 ServicePort:0xc042193890 UID:} Service:0xc042446300 Labels:cluster=hello_s2,version=v1 AvailabilityZone:sh02 ServiceAccount:}
+2018-09-05T17:18:24.578+0800    INFO    glog/glog.go:80 write object to /instances/. obj = &etcd.Instance{Id:"", ServiceId:"hello_server_alpha.ns-a", ServiceVersion:"v1", NodeId:"192-168-170-140", Port:(*etcd.Port)(0x202ac40), Labels:map[string]string{"version":"v1"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"ServiceId":"hello_server_alpha.ns-a","ServiceVersion":"v1","NodeId":"192-168-170-140","Port":{"Name":"grpc","Port":50052,"Protocol":"GRPC"},"Labels":{"version":"v1"}}
+2018-09-05T17:18:24.580+0800    INFO    InstanceManager etcd/instance.go:40     put instance, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50052, ServicePort:(*model.Port)(0xc042193890), UID:""}, Service:(*model.Service)(0xc042446300), Labels:model.Labels{"cluster":"hello_s2", "version":"v1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T17:18:24.582+0800    INFO    InstanceManager etcd/instance.go:56     put instance, key = /pilot/services/hello_server_alpha.ns-a/instances/192.168.170.140:50052, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50052
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server_alpha.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s2
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+
+2018-09-05T17:18:24.582+0800    INFO    glog/glog.go:80 write object to /clusters/hello_s2. obj = &etcd.Cluster{Id:"hello_s2", ServiceId:"hello_server_alpha.ns-a", InstanceIds:map[string]string{"":""}, Labels:map[string]string(nil), XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}, value = {"Id":"hello_s2","ServiceId":"hello_server_alpha.ns-a","InstanceIds":{"":""}}

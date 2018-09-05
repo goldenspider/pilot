@@ -1,0 +1,525 @@
+2018-09-05T09:18:36.412017Z     info    parsed scheme: ""
+2018-09-05T09:18:36.412017Z     info    scheme "" not registered, fallback to default scheme
+2018-09-05T09:18:36.412017Z     info    ccResolverWrapper: sending new addresses to cc: [{127.0.0.1:2379 0  <nil>}]
+2018-09-05T09:18:36.413017Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-09-05T09:18:36.415017Z     info    args.Mesh.ConfigFile =./mesh.txt
+2018-09-05T09:18:36.418017Z     info    mesh configuration (*v1alpha1.MeshConfig)(0xc0421f2380)(proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 > )
+
+2018-09-05T09:18:36.418017Z     info    version unknown@unknown-unknown-unknown-unknown-unknown
+2018-09-05T09:18:36.421017Z     info    flags (*bootstrap.PilotArgs)(0xc04201c000)({
+ DiscoveryOptions: (envoy.DiscoveryServiceOptions) {
+  HTTPAddr: (string) (len=5) ":8080",
+  GrpcAddr: (string) (len=19) "192.168.170.1:15010",
+  SecureGrpcAddr: (string) "",
+  MonitoringAddr: (string) (len=5) ":9093",
+  EnableProfiling: (bool) true,
+  EnableCaching: (bool) true,
+  WebhookEndpoint: (string) ""
+ },
+ Namespace: (string) "",
+ Mesh: (bootstrap.MeshArgs) {
+  ConfigFile: (string) (len=10) "./mesh.txt",
+  MixerAddress: (string) "",
+  RdsRefreshDelay: (*duration.Duration)(<nil>)
+ },
+ Config: (bootstrap.ConfigArgs) {
+  ClusterRegistriesConfigmap: (string) "",
+  ClusterRegistriesNamespace: (string) (len=12) "istio-system",
+  Controller: (model.ConfigStoreCache) <nil>
+ },
+ Service: (bootstrap.ServiceArgs) {
+  Registries: ([]string) (len=1 cap=1) {
+   (string) (len=4) "Etcd"
+  },
+  Etcd: (bootstrap.EtcdArgs) {
+   EtcdEndpoints: (string) (len=14) "127.0.0.1:2379",
+   Config: (clientv3.Config) {
+    Endpoints: ([]string) (len=1 cap=1) {
+     (string) (len=14) "127.0.0.1:2379"
+    },
+    AutoSyncInterval: (time.Duration) 0s,
+    DialTimeout: (time.Duration) 5s,
+    DialKeepAliveTime: (time.Duration) 0s,
+    DialKeepAliveTimeout: (time.Duration) 0s,
+    MaxCallSendMsgSize: (int) 0,
+    MaxCallRecvMsgSize: (int) 0,
+    TLS: (*tls.Config)(<nil>),
+    Username: (string) "",
+    Password: (string) "",
+    RejectOldCluster: (bool) false,
+    DialOptions: ([]grpc.DialOption) <nil>,
+    Context: (context.Context) <nil>
+   },
+   EtcdPrefix: (string) (len=6) "/pilot",
+   SdPrefix: (string) (len=3) "/ns"
+  }
+ },
+ MeshConfig: (*v1alpha1.MeshConfig)(0xc0421f2380)(proxy_listen_port:15001 connect_timeout:<seconds:1 > ingress_class:"istio" ingress_controller_mode:STRICT rds_refresh_delay:<seconds:1 > enable_tracing:true access_log_file:"/dev/stdout" default_config:<config_path:"/etc/istio/proxy" binary_path:"/usr/local/bin/envoy" service_cluster:"istio-proxy" drain_duration:<seconds:2 > parent_shutdown_duration:<seconds:3 > discovery_address:"istio-pilot:15007" discovery_refresh_delay:<seconds:1 > connect_timeout:<seconds:1 > proxy_admin_port:15000 > sds_refresh_delay:<seconds:15 > ),
+ CtrlZOptions: (*ctrlz.Options)(0xc04212ec00)({
+  Port: (uint16) 9876,
+  Address: (string) (len=9) "127.0.0.1"
+ }),
+ Plugins: ([]string) <nil>
+})
+
+2018-09-05T09:18:36.421017Z     info    Adding Etcd registry adapter
+2018-09-05T09:18:36.421017Z     info    etcd url: 127.0.0.1:2379
+2018-09-05T09:18:36.424017Z     info    ads     Starting ADS server with throttle=25 burst=100
+2018-09-05T09:18:36.425017Z     info    balancerWrapper: got update addr from Notify: [{127.0.0.1:2379 <nil>}]
+
+2018-09-05T09:18:36.487021Z     info    Discovery service started at http=[::]:8080 grpc=192.168.170.1:15010
+2018-09-05T17:18:36.488+0800    INFO    glog/glog.go:64 controller is running...
+2018-09-05T09:18:36.512022Z     info    ControlZ available at 169.254.142.167:9876
+time="2018-09-05T17:18:47+08:00" level=info msg=Services source="controller.go:51"
+2018-09-05T17:18:47.201+0800    INFO    glog/glog.go:80 key=/pilot/services/
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 rsp={Header:cluster_id:14841639068965178418 member_id:10276657743932975437 revision:22 raft_term:2  Kvs:[key:"/pilot/services/hello_server.ns-a" create_revision:8 mod_revision:8 version:1  key:"/pilot/services/hello_server.ns-a/instances/192.168.170.140:50051" create_revision:12 mod_revision:12 version:1  key:"/pilot/services/hello_server.ns-a/instances/192.168.170.1:50051" create_revision:14 mod_revision:14 version:1  key:"/pilot/services/hello_server_alpha.ns-a" create_revision:17 mod_revision:17 version:1  key:"/pilot/services/hello_server_alpha.ns-a/instances/192.168.170.140:50052" create_revision:21 mod_revision:21 version:1 ] More:false Count:5}
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 kv ={Key:[47 112 105 108 111 116 47 115 101 114 118 105 99 101 115 47 104 101 108 108 111 95 115 101 114 118 101 114 46 110 115 45 97] CreateRevision:8 ModRevision:8 Version:1 Value:[] Lease:0}
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 kv ={Key:[47 112 105 108 111 116 47 115 101 114 118 105 99 101 115 47 104 101 108 108 111 95 115 101 114 118 101 114 46 110 115 45 97 47 105 110 115 116 97 110 99 101 115 47 49 57 50 46 49 54 56 46 49 55 48 46 49 52 48 58 53 48 48 53 49] CreateRevision:12 ModRevision:12 Version:1 Value:[] Lease:0}
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 kv ={Key:[47 112 105 108 111 116 47 115 101 114 118 105 99 101 115 47 104 101 108 108 111 95 115 101 114 118 101 114 46 110 115 45 97 47 105 110 115 116 97 110 99 101 115 47 49 57 50 46 49 54 56 46 49 55 48 46 49 58 53 48 48 53 49] CreateRevision:14 ModRevision:14 Version:1 Value:[] Lease:0}
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 kv ={Key:[47 112 105 108 111 116 47 115 101 114 118 105 99 101 115 47 104 101 108 108 111 95 115 101 114 118 101 114 95 97 108 112 104 97 46 110 115 45 97] CreateRevision:17 ModRevision:17 Version:1 Value:[] Lease:0}
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 kv ={Key:[47 112 105 108 111 116 47 115 101 114 118 105 99 101 115 47 104 101 108 108 111 95 115 101 114 118 101 114 95 97 108 112 104 97 46 110 115 45 97 47 105 110 115 116 97 110 99 101 115 47 49 57 50 46 49 54 56 46 49 55 48 46 49 52 48 58 53 48 48 53 50] CreateRevision:21 ModRevision:21 Version:1 Value:[] Lease:0}
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 get service names : [hello_server.ns-a hello_server_alpha.ns-a]
+2018-09-05T17:18:47.202+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a
+2018-09-05T17:18:47.203+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc0424226f0)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.203+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:47.204+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a, key = /pilot/services/hello_server_alpha.ns-a, value = hostname: hello_server_alpha.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server_alpha.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc0424148a0)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.204+0800    INFO    glog/glog.go:80 List typ=service-entry namespace=
+2018-09-05T17:18:47.204+0800    INFO    glog/glog.go:80 List typ=virtual-service namespace=
+2018-09-05T17:18:47.204+0800    DEBUG   glog/glog.go:59 decoding stream as YAML
+2018-09-05T17:18:47.208+0800    DEBUG   glog/glog.go:59 decoding stream as YAML
+virtual-service Ok: varr:[{ConfigMeta:{Type:virtual-service Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace:ns-a Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:hosts:"hello_server" http:<match:<uri:<prefix:"/hello" > > route:<destination:<host:"hello_server" subset:"v1" > weight:90 > route:<destination:<host:"hello_server" subset:"v2" > weight:10 > > } {ConfigMeta:{Type:virtual-service Group:networking.istio.io Version:v1alpha3 Name:hello_server_alpha Namespace:ns-a Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:hosts:"hello_server_alpha" http:<match:<uri:<prefix:"/hello" > > route:<destination:<host:"hello_server_alpha" subset:"v1" > > > }]
+2018-09-05T17:18:47.209+0800    INFO    glog/glog.go:80 List typ=destination-rule namespace=
+2018-09-05T17:18:47.209+0800    DEBUG   glog/glog.go:59 decoding stream as YAML
+2018-09-05T17:18:47.210+0800    DEBUG   glog/glog.go:59 decoding stream as YAML
+destination-rule Ok: varr:[{ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server Namespace:ns-a Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > subsets:<name:"v2" labels:<key:"version" value:"v2" > > } {ConfigMeta:{Type:destination-rule Group:networking.istio.io Version:v1alpha3 Name:hello_server_alpha Namespace:ns-a Domain: Labels:map[] Annotations:map[] ResourceVersion: CreationTimestamp:0001-01-01 00:00:00 +0000 UTC} Spec:host:"hello_server_alpha" traffic_policy:<load_balancer:<simple:ROUND_ROBIN > > subsets:<name:"v1" labels:<key:"version" value:"v1" > > }]
+2018-09-05T09:18:47.210634Z     info    ads     ADS:CDS: REQ 192.168.170.140:40380 sidecar~192.168.170.140~~-1 9.0005ms raw: node:<id:"sidecar~192.168.170.140~~" cluster:"sidecar" build_version:"f379ad1f0382ecb4b40f0c3550237574c8b9f930/1.8.0-dev/Clean/RELEASE" > type_url:"type.googleapis.com/envoy.api.v2.Cluster"
+time="2018-09-05T17:18:47+08:00" level=info msg="GetProxyServiceInstances node=&{ClusterID: Type:sidecar IPAddress:192.168.170.140 ID: Domain: Metadata:map[]}" source="controller.go:130"
+2018-09-05T17:18:47.210+0800    INFO    glog/glog.go:80 List typ=service-entry namespace=
+time="2018-09-05T17:18:47+08:00" level=info msg="ManagementPorts addr=192.168.170.140" source="controller.go:84"
+2018-09-05T09:18:47.211634Z     info    ads     CDS: PUSH 0 for  "192.168.170.140:40380", Clusters: 8, Services 2
+2018-09-05T09:18:47.220635Z     debug   ads     ADS:EDS: REQ 192.168.170.140:40380 sidecar~192.168.170.140~~-1 clusters: 5
+
+InstancesByPort hostname=hello_server.ns-a reqSvcPort=15001 labelsList=[version=v1]
+2018-09-05T17:18:47.221+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server.ns-a
+2018-09-05T17:18:47.221+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a
+2018-09-05T17:18:47.222+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc04241f110)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.223+0800    INFO    Client  etcd/client.go:235      get instances, online = map[192.168.170.1:50051:50051 hello_s1/192.168.170.1:50051 hello_s1/192.168.170.140:50051 192.168.170.140:50051:50051]
+2018-09-05T17:18:47.225+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.140:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50051, ServicePort:(*model.Port)(0xc042424780), UID:""}, Service:(*model.Service)(0xc0421e0300), Labels:model.Labels{"cluster":"hello_s1", "version":"v1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T17:18:47.225+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.1:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.1
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v2
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.1", Port:50051, ServicePort:(*model.Port)(0xc0424249f0), UID:""}, Service:(*model.Service)(0xc0421e03c0), Labels:model.Labels{"cluster":"hello_s1", "version":"v2"}, AvailabilityZone:"sh02", ServiceAccount:""}
+
+InstancesByPort hostname=hello_server_alpha.ns-a reqSvcPort=15001 labelsList=[version=v1]
+2018-09-05T17:18:47.225+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:47.225+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:47.226+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a, key = /pilot/services/hello_server_alpha.ns-a, value = hostname: hello_server_alpha.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server_alpha.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc0422df2c0)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.227+0800    INFO    Client  etcd/client.go:235      get instances, online = map[192.168.170.140:50052:50052 hello_s1/192.168.170.140:50052]
+2018-09-05T17:18:47.227+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server_alpha.ns-a/instances/192.168.170.140:50052, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50052
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server_alpha.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s2
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50052, ServicePort:(*model.Port)(0xc042415590), UID:""}, Service:(*model.Service)(0xc042471200), Labels:model.Labels{"cluster":"hello_s2", "version":"v1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+
+InstancesByPort hostname=hello_server.ns-a reqSvcPort=15001 labelsList=[version=v2]
+2018-09-05T17:18:47.227+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server.ns-a
+2018-09-05T17:18:47.228+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a
+2018-09-05T17:18:47.228+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc042415b60)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.229+0800    INFO    Client  etcd/client.go:235      get instances, online = map[hello_s1/192.168.170.140:50051 hello_s1/192.168.170.1:50051 192.168.170.140:50051:50051 192.168.170.1:50051:50051]
+2018-09-05T17:18:47.230+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.140:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50051, ServicePort:(*model.Port)(0xc0427ac090), UID:""}, Service:(*model.Service)(0xc042471440), Labels:model.Labels{"version":"v1", "cluster":"hello_s1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T17:18:47.231+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.1:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.1
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v2
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.1", Port:50051, ServicePort:(*model.Port)(0xc0427ac2d0), UID:""}, Service:(*model.Service)(0xc042471500), Labels:model.Labels{"cluster":"hello_s1", "version":"v2"}, AvailabilityZone:"sh02", ServiceAccount:""}
+
+InstancesByPort hostname=hello_server.ns-a reqSvcPort=15001 labelsList=[]
+2018-09-05T17:18:47.231+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server.ns-a
+2018-09-05T17:18:47.231+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a
+2018-09-05T17:18:47.232+0800    INFO    glog/glog.go:80 get services, hostname = hello_server.ns-a, key = /pilot/services/hello_server.ns-a, value = hostname: hello_server.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc0427aca50)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.233+0800    INFO    Client  etcd/client.go:235      get instances, online = map[hello_s1/192.168.170.140:50051 192.168.170.140:50051:50051 192.168.170.1:50051:50051 hello_s1/192.168.170.1:50051]
+2018-09-05T17:18:47.234+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.140:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50051, ServicePort:(*model.Port)(0xc042525590), UID:""}, Service:(*model.Service)(0xc0425623c0), Labels:model.Labels{"cluster":"hello_s1", "version":"v1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T17:18:47.234+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server.ns-a/instances/192.168.170.1:50051, value = endpoint:
+  family: 0
+  address: 192.168.170.1
+  port: 50051
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s1
+  version: v2
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.1", Port:50051, ServicePort:(*model.Port)(0xc0425257d0), UID:""}, Service:(*model.Service)(0xc042562480), Labels:model.Labels{"cluster":"hello_s1", "version":"v2"}, AvailabilityZone:"sh02", ServiceAccount:""}
+
+InstancesByPort hostname=hello_server_alpha.ns-a reqSvcPort=15001 labelsList=[]
+2018-09-05T17:18:47.235+0800    INFO    glog/glog.go:80 get instances, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:47.235+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a
+2018-09-05T17:18:47.236+0800    INFO    glog/glog.go:80 get services, hostname = hello_server_alpha.ns-a, key = /pilot/services/hello_server_alpha.ns-a, value = hostname: hello_server_alpha.ns-a
+address: 0.0.0.0
+clustervips: {}
+ports:
+- name: grpc
+  port: 15001
+  protocol: GRPC
+externalname: ""
+serviceaccounts: []
+meshexternal: false
+loadbalancingdisabled: false
+resolution: 0
+creationtime: 0001-01-01T00:00:00Z
+attributes:
+  name: ""
+  namespace: ""
+  uid: ""
+, service = &model.Service{Hostname:"hello_server_alpha.ns-a", Address:"0.0.0.0", ClusterVIPs:map[string]string{}, Ports:model.PortList{(*model.Port)(0xc042425770)}, ExternalName:"", ServiceAccounts:[]string{}, MeshExternal:false, LoadBalancingDisabled:false, Resolution:0, CreationTime:time.Time{wall:0x0, ext:0, loc:(*time.Location)(nil)}, Attributes:model.ServiceAttributes{Name:"", Namespace:"", UID:""}}
+2018-09-05T17:18:47.237+0800    INFO    Client  etcd/client.go:235      get instances, online = map[192.168.170.140:50052:50052 hello_s1/192.168.170.140:50052]
+2018-09-05T17:18:47.238+0800    INFO    Client  etcd/client.go:268      get instance, key = /pilot/services/hello_server_alpha.ns-a/instances/192.168.170.140:50052, value = endpoint:
+  family: 0
+  address: 192.168.170.140
+  port: 50052
+  serviceport:
+    name: grpc
+    port: 15001
+    protocol: GRPC
+  uid: ""
+service:
+  hostname: hello_server_alpha.ns-a
+  address: 0.0.0.0
+  clustervips: {}
+  ports:
+  - name: grpc
+    port: 15001
+    protocol: GRPC
+  externalname: ""
+  serviceaccounts: []
+  meshexternal: false
+  loadbalancingdisabled: false
+  resolution: 0
+  creationtime: 0001-01-01T00:00:00Z
+  attributes:
+    name: ""
+    namespace: ""
+    uid: ""
+labels:
+  cluster: hello_s2
+  version: v1
+availabilityzone: sh02
+serviceaccount: ""
+, instance = &model.ServiceInstance{Endpoint:model.NetworkEndpoint{Family:0, Address:"192.168.170.140", Port:50052, ServicePort:(*model.Port)(0xc042525f20), UID:""}, Service:(*model.Service)(0xc042562540), Labels:model.Labels{"cluster":"hello_s2", "version":"v1"}, AvailabilityZone:"sh02", ServiceAccount:""}
+2018-09-05T09:18:47.239636Z     debug   ads     EDS: PUSH for sidecar~192.168.170.140~~-1 clusters 5 endpoints 5 empty 0
+2018-09-05T09:18:47.239636Z     debug   ads     ADS:CDS: ACK 192.168.170.140:40380 version_info:"0" node:<id:"sidecar~192.168.170.140~~" cluster:"sidecar" build_version:"f379ad1f0382ecb4b40f0c3550237574c8b9f930/1.8.0-dev/Clean/RELEASE" > type_url:"type.googleapis.com/envoy.api.v2.Cluster" response_nonce:"2018-09-05 17:18:47.2106346 +0800 CST m=+10.838619901"
+2018-09-05T09:18:47.242636Z     debug   ads     ADS:LDS: REQ sidecar~192.168.170.140~~-1 192.168.170.140:40380
+time="2018-09-05T17:18:47+08:00" level=info msg="ManagementPorts addr=192.168.170.140" source="controller.go:84"
+time="2018-09-05T17:18:47+08:00" level=info msg="GetProxyServiceInstances node=&{ClusterID: Type:sidecar IPAddress:192.168.170.140 ID: Domain: Metadata:map[]}" source="controller.go:130"
+2018-09-05T09:18:47.246636Z     info    ads     LDS: PUSH for node: addr:"192.168.170.140:40380" listeners:4
+2018-09-05T09:18:47.262637Z     debug   ads     ADS:RDS: REQ 192.168.170.140:40380 sidecar~192.168.170.140~~-1  routes: 1
+time="2018-09-05T17:18:47+08:00" level=info msg="GetProxyServiceInstances node=&{ClusterID: Type:sidecar IPAddress:192.168.170.140 ID: Domain: Metadata:map[]}" source="controller.go:130"
+2018-09-05T09:18:47.263637Z     info    ads     ADS: RDS: PUSH for node:  addr:192.168.170.140:40380 routes:1
+2018-09-05T09:18:47.263637Z     debug   ads     ADS:LDS: ACK version_info:"0" node:<id:"sidecar~192.168.170.140~~" cluster:"sidecar" build_version:"f379ad1f0382ecb4b40f0c3550237574c8b9f930/1.8.0-dev/Clean/RELEASE" > type_url:"type.googleapis.com/envoy.api.v2.Listener" response_nonce:"2018-09-05 17:18:47.2466367 +0800 CST m=+10.874622001"
+2018-09-05T09:18:47.266637Z     debug   ads     ADS:RDS: ACK 192.168.170.140:40380 sidecar~192.168.170.140~~-1 (&{ sidecar 192.168.170.140   map[]}) 0 2018-09-05 17:18:47.2636377 +0800 CST m=+10.891623001

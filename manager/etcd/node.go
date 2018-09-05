@@ -51,3 +51,13 @@ func (m *NodeManager) GetNode(nodeId string) *pb.Node {
 
 	return node
 }
+
+func (m *NodeManager) PutNode(node *pb.Node) error {
+	nodeKey := fmt.Sprintf("/nodes/%s", node.Id)
+	if e := m.ds.Put(nodeKey, node); e != nil {
+		m.Errorf("写入Node(%s)失败. %s", node.Id, e)
+		return nil
+	}
+
+	return nil
+}

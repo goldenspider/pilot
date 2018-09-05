@@ -23,7 +23,6 @@ import (
 	"github.com/prometheus/common/log"
 	"istio.io/istio/pilot/pkg/model"
 	m "pilot/manager/etcd"
-	pb "pilot/pkg/proto/etcd"
 )
 
 type InstanceHandler = func(*model.ServiceInstance, model.Event)
@@ -50,11 +49,6 @@ func NewController(client *m.Client) *Controller {
 // Services list declarations of all services in the system
 func (c *Controller) Services() ([]*model.Service, error) {
 	log.Info("Services")
-	//var svcs []*model.Service
-	//for _, svc := range Services {
-	//	svcs = append(svcs, convertService(svc))
-	//}
-
 	names, err := c.client.GetServiceNames()
 	if err != nil {
 		return nil, err
@@ -111,54 +105,23 @@ func (c *Controller) Instances(hostname model.Hostname, ports []string,
 func (c *Controller) InstancesByPort(hostname model.Hostname, reqSvcPort int,
 	labelsList model.LabelsCollection) ([]*model.ServiceInstance, error) {
 	fmt.Printf("\nInstancesByPort hostname=%s reqSvcPort=%d labelsList=%s\n", hostname, reqSvcPort, labelsList)
-	name, namespace := parseHostname(hostname)
 
-	var service *pb.Service
-	for _, svc := range Services {
-		if name == svc.Name && namespace == svc.Namespace {
-			service = svc
-			break
-		}
-	}
-
-	if service == nil {
-		return nil, fmt.Errorf("no found service . name=%s namespace=%s", name, namespace)
-	}
-
-	svc := m.ConvertService(service)
-
-	svcPortEntry, exists := svc.Ports.GetByPort(reqSvcPort)
-	if !exists && reqSvcPort != 0 {
-		return nil, fmt.Errorf("no found svcPortEntry . reqSvcPort=%d", reqSvcPort)
+	objs, err := c.client.GetInstances(string(hostname))
+	if err != nil {
+		return nil, err
 	}
 
 	var out []*model.ServiceInstance
-	for _, ep := range Endpoints {
-		if ep.ServiceId == string(svc.Hostname) {
-			node := getNode(ep.NodeId)
-			if node == nil {
-				return nil, fmt.Errorf("no found node. NodeId=%s", ep.NodeId)
-			}
-			if !labelsList.HasSubsetOf(ep.Labels) {
-				continue
-			}
+	for _, obj := range objs {
+		if !labelsList.HasSubsetOf(obj.Labels) {
+			continue
+		}
 
-			if svcPortEntry.Name == ep.Port.Name {
-				out = append(out, &model.ServiceInstance{
-					Endpoint: model.NetworkEndpoint{
-						Address:     node.Ip,
-						Port:        int(ep.Port.Port),
-						ServicePort: svcPortEntry,
-					},
-					Service:          svc,
-					Labels:           map[string]string{"version": ep.ServiceVersion},
-					AvailabilityZone: node.Az,
-				})
-				fmt.Printf("")
-			}
-
+		if obj.Endpoint.ServicePort.Port == reqSvcPort {
+			out = append(out, obj)
 		}
 	}
+
 	return out, nil
 }
 

@@ -121,7 +121,7 @@ func ResourceGroup(schema *model.ProtoSchema) string {
 	return schema.Group + model.IstioAPIGroupDomain
 }
 
-func convertLabels(labels []string) model.Labels {
+func ConvertLabels(labels []string) model.Labels {
 	out := make(model.Labels, len(labels))
 	for _, tag := range labels {
 		vals := strings.Split(tag, "|")

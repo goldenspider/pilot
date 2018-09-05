@@ -25,6 +25,7 @@ import (
 	middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/hashicorp/go-multierror"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"io/ioutil"
@@ -165,7 +166,10 @@ func NewServer(args PilotArgs) (*Server, error) {
 		return nil, multierror.Prefix(err, "failed to open a etcd client.")
 	}
 
-	client := m.NewClient(cli, args.Service.Etcd.EtcdPrefix, args.Service.Etcd.SdPrefix)
+	l, _ := zap.NewDevelopment()
+	zap.ReplaceGlobals(l)
+
+	client := m.NewClient(l.Sugar(), cli, args.Service.Etcd.EtcdPrefix, args.Service.Etcd.SdPrefix)
 
 	s := &Server{etcdClient: client}
 	//////////////////////////
