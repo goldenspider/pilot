@@ -1,0 +1,133 @@
+curl  http://127.0.0.1:8080/etcd/api/nodes/192-168-170-141 -X PUT -i -H "Content-Type:application/json" -d  '{
+  "Id": "192-168-170-141",
+  "Ip": "192.168.170.141", 
+  "Az": "sh02"
+}'
+
+curl  http://127.0.0.1:8080/etcd/api/nodes/192-168-170-1 -X PUT -i -H "Content-Type:application/json" -d  '{
+ "Id": "192-168-170-1",
+ "Ip": "192.168.170.1",
+ "Az": "sh02"
+}'
+
+/////////////
+D:\etcd-v3.3.9-windows-amd64>etcdctl.exe get /nodes --prefix
+/nodes/192-168-170-1
+{"Id":"192-168-170-1","Ip":"192.168.170.1","Az":"sh02"}
+/nodes/192-168-170-141
+{"Id":"192-168-170-141","Ip":"192.168.170.141","Az":"sh02"}
+/////////////
+curl http://127.0.0.1:8080/etcd/api/services/hello_server.ns-a -X PUT -i -H "Content-Type:application/json" -d  '{
+"Name": "hello_server",
+"Namespace": "ns-a",
+ "Version": {
+ "v1": "test1",
+"v2": "test2"
+ },
+"Ports": [
+{
+ "Name": "grpc",
+"Port": 15001,
+ "Protocol": "GRPC"
+}
+  ]
+}'
+
+curl http://127.0.0.1:8080/etcd/api/services/hello_server_alpha.ns-a -X PUT -i -H "Content-Type:application/json" -d  '{
+ "Name": "hello_server_alpha",
+ "Namespace": "ns-a",
+  "Version": {
+"v1": ""
+ },
+"Ports": [
+{
+ "Name": "grpc",
+"Port": 15001,
+ "Protocol": "GRPC"
+ }
+ ]
+}'
+
+
+curl http://127.0.0.1:8080/etcd/api/clusters/hello_s1 -X PUT -i -H "Content-Type:application/json" -d  '{ 
+"Id": "hello_s1"
+}'
+
+curl http://127.0.0.1:8080/etcd/api/clusters/hello_s2 -X PUT -i -H "Content-Type:application/json" -d  '{ 
+"Id": "hello_s2"
+}'
+
+curl http://127.0.0.1:8080/etcd/api/clusters/hello_s1/services/hello_server.ns-a -X PUT -i -H "Content-Type:application/json" -d  '{
+"Name": "hello_server",
+"Namespace": "ns-a",
+ "Version": {
+ "v1": "test1",
+"v2": "test2"
+ },
+"Ports": [
+{
+ "Name": "grpc",
+"Port": 15001,
+ "Protocol": "GRPC"
+}
+  ]
+}'
+
+curl http://127.0.0.1:8080/etcd/api/clusters/hello_s2/services/hello_server_alpha.ns-a -X PUT -i -H "Content-Type:application/json" -d  '{
+ "Name": "hello_server_alpha",
+ "Namespace": "ns-a",
+  "Version": {
+"v1": ""
+ },
+"Ports": [
+{
+ "Name": "grpc",
+"Port": 15001,
+ "Protocol": "GRPC"
+ }
+ ]
+}'
+
+
+curl http://127.0.0.1:8080/etcd/api/clusters/hello_s1/services/hello_server.ns-a/instances -X PUT -i -H "Content-Type:application/json" -d  '[{                                      
+ "ServiceId": "hello_server.ns-a",
+ "ServiceVersion": "v1",          
+ "NodeId": "192-168-170-141",     
+ "Port": {                        
+ "Name": "grpc",                
+ "Port": 50051,                 
+ "Protocol": "GRPC"             
+ },                               
+ "Labels": {                      
+ "version": "v1"                
+ }                                
+ },
+{
+ "ServiceId": "hello_server.ns-a",
+ "ServiceVersion": "v2",
+ "NodeId": "192-168-170-1",
+ "Port": {
+ "Name": "grpc",
+ "Port": 50051,
+ "Protocol": "GRPC"
+ },
+ "Labels": {
+ "version": "v2"
+ }
+ }]'
+
+curl http://127.0.0.1:8080/etcd/api/clusters/hello_s2/services/hello_server_alpha.ns-a/instances -X PUT -i -H "Content-Type:application/json" -d  '[{
+ "ServiceId": "hello_server_alpha.ns-a",
+ "ServiceVersion": "v1",
+ "NodeId": "192-168-170-141",
+ "Port": {
+ "Name": "grpc",
+ "Port": 50052,
+ "Protocol": "GRPC"
+ },
+ "Labels": {
+ "version": "v1"
+ }
+ }]'
+
+

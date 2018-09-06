@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/gin-gonic/gin"
@@ -65,8 +66,8 @@ var Services []*pb.Service = []*pb.Service{
 
 var Nodes []*pb.Node = []*pb.Node{
 	&pb.Node{
-		Id: "192-168-170-140",
-		Ip: "192.168.170.140",
+		Id: "192-168-170-141",
+		Ip: "192.168.170.141",
 		Az: "sh02",
 	},
 	&pb.Node{
@@ -80,7 +81,7 @@ var Endpoints []*pb.Instance = []*pb.Instance{
 	&pb.Instance{
 		ServiceId:      "hello_server.ns-a",
 		ServiceVersion: "v1",
-		NodeId:         "192-168-170-140",
+		NodeId:         "192-168-170-141",
 		Port: &pb.Port{
 			Name:     "grpc",
 			Port:     50051,
@@ -102,7 +103,7 @@ var Endpoints []*pb.Instance = []*pb.Instance{
 	&pb.Instance{
 		ServiceId:      "hello_server_alpha.ns-a",
 		ServiceVersion: "v1",
-		NodeId:         "192-168-170-140",
+		NodeId:         "192-168-170-141",
 		Port: &pb.Port{
 			Name:     "grpc",
 			Port:     50052,
@@ -198,6 +199,14 @@ func (m *manager) initRouter() http.Handler {
 	return r
 }
 
+func GetConfigJSON(cfg interface{}) string {
+	bytes, e := json.MarshalIndent(cfg, "", "  ")
+	if e != nil {
+		panic(e)
+	}
+	return string(bytes)
+}
+
 func main() {
 	exit := make(chan os.Signal, 10)
 	signal.Notify(exit, syscall.SIGINT, syscall.SIGTERM)
@@ -207,43 +216,139 @@ func main() {
 		return
 	}
 
-	//name = /ns/bfcheck/bfcheck-s1/172.28.217.219:8010
-	m.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.140:50051", "")
-	m.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.1:50051", "")
-	m.ds.Put("/ns/hello_server_alpha.ns-a/hello_s1/192.168.170.140:50052", "")
-
-	for _, node := range Nodes {
-		e := m.nd.PutNode(node)
-		if e != nil {
-			fmt.Println(e)
+	fmt.Println(GetConfigJSON(Nodes[0]))
+	fmt.Println(GetConfigJSON(Nodes[1]))
+	fmt.Println(GetConfigJSON(Clusters[0]))
+	fmt.Println(GetConfigJSON(Clusters[1]))
+	fmt.Println(GetConfigJSON(Services[0]))
+	fmt.Println(GetConfigJSON(Services[1]))
+	fmt.Println(GetConfigJSON(Endpoints[0]))
+	fmt.Println(GetConfigJSON(Endpoints[1]))
+	fmt.Println(GetConfigJSON(Endpoints[2]))
+	/*
+		{
+		  "Id": "192-168-170-141",
+		  "Ip": "192.168.170.141",
+		  "Az": "sh02"
 		}
-	}
-	//////////////////
-	m.cs.Put(Clusters[0])
+		{
+		  "Id": "192-168-170-1",
+		  "Ip": "192.168.170.1",
+		  "Az": "sh02"
+		}
+		{
+		  "Id": "hello_s1"
+		}
+		{
+		  "Id": "hello_s2"
+		}
+		{
+		  "Name": "hello_server",
+		  "Namespace": "ns-a",
+		  "Version": {
+		    "v1": "test1",
+		    "v2": "test2"
+		  },
+		  "Ports": [
+		    {
+		      "Name": "grpc",
+		      "Port": 15001,
+		      "Protocol": "GRPC"
+		    }
+		  ]
+		}
+		{
+		  "Name": "hello_server_alpha",
+		  "Namespace": "ns-a",
+		  "Version": {
+		    "v1": ""
+		  },
+		  "Ports": [
+		    {
+		      "Name": "grpc",
+		      "Port": 15001,
+		      "Protocol": "GRPC"
+		    }
+		  ]
+		}
+		{
+		  "ServiceId": "hello_server.ns-a",
+		  "ServiceVersion": "v1",
+		  "NodeId": "192-168-170-141",
+		  "Port": {
+		    "Name": "grpc",
+		    "Port": 50051,
+		    "Protocol": "GRPC"
+		  },
+		  "Labels": {
+		    "version": "v1"
+		  }
+		}
+		{
+		  "ServiceId": "hello_server.ns-a",
+		  "ServiceVersion": "v2",
+		  "NodeId": "192-168-170-1",
+		  "Port": {
+		    "Name": "grpc",
+		    "Port": 50051,
+		    "Protocol": "GRPC"
+		  },
+		  "Labels": {
+		    "version": "v2"
+		  }
+		}
+		{
+		  "ServiceId": "hello_server_alpha.ns-a",
+		  "ServiceVersion": "v1",
+		  "NodeId": "192-168-170-141",
+		  "Port": {
+		    "Name": "grpc",
+		    "Port": 50052,
+		    "Protocol": "GRPC"
+		  },
+		  "Labels": {
+		    "version": "v1"
+		  }
+		}
 
-	e := m.cs.PutService(Clusters[0].Id, Services[0])
-	if e != nil {
-		fmt.Println(e)
-	}
+	*/
 
-	e = m.cs.PutServiceInstance(Clusters[0].Id, "hello_server.ns-a", Endpoints)
-	if e != nil {
-		fmt.Println(e)
-	}
+	m.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.141:50051", "")
+	m.ds.Put("/ns/hello_server.ns-a/hello_s1/192.168.170.1:50051", "")
+	m.ds.Put("/ns/hello_server_alpha.ns-a/hello_s1/192.168.170.141:50052", "")
 
-	//////////////////
-	m.cs.Put(Clusters[1])
-
-	e = m.cs.PutService(Clusters[1].Id, Services[1])
-	if e != nil {
-		fmt.Println(e)
-	}
-
-	e = m.cs.PutServiceInstance(Clusters[1].Id, "hello_server_alpha.ns-a", Endpoints)
-	if e != nil {
-		fmt.Println(e)
-	}
-	//////////////////
+	//for _, node := range Nodes {
+	//	e := m.nd.PutNode(node)
+	//	if e != nil {
+	//		fmt.Println(e)
+	//	}
+	//}
+	////////////////////
+	//m.cs.Put(Clusters[0])
+	//
+	//e := m.cs.PutService(Clusters[0].Id, Services[0])
+	//if e != nil {
+	//	fmt.Println(e)
+	//}
+	//
+	//e = m.cs.PutServiceInstance(Clusters[0].Id, "hello_server.ns-a", Endpoints)
+	//if e != nil {
+	//	fmt.Println(e)
+	//}
+	//
+	////////////////////
+	//m.cs.Put(Clusters[1])
+	//
+	//e = m.cs.PutService(Clusters[1].Id, Services[1])
+	//if e != nil {
+	//	fmt.Println(e)
+	//}
+	//
+	//e = m.cs.PutServiceInstance(Clusters[1].Id, "hello_server_alpha.ns-a", Endpoints)
+	//if e != nil {
+	//	fmt.Println(e)
+	//}
+	////////////////////
 	m.Http.Addr = "0.0.0.0:8080"
 	go func() {
 		fmt.Printf("The HTTP server is listen at %s", m.Http.Addr)

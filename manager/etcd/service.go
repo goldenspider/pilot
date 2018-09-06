@@ -46,13 +46,13 @@ func (m *ServiceManager) InitRouter(r *gin.RouterGroup) error {
 	})
 
 	r.PUT("/services/:service", func(c *gin.Context) {
-		//o := &pb.Service{}
-		//c.BindJSON(o)
-		//
-		//if e := m.Put(o); e != nil {
-		//	AbortWithError(m.SugaredLogger, c, e)
-		//	return
-		//}
+		o := &pb.Service{}
+		c.BindJSON(o)
+
+		if e := m.PutService(o); e != nil {
+			AbortWithError(m.SugaredLogger, c, e)
+			return
+		}
 		c.JSON(200, struct{}{})
 	})
 

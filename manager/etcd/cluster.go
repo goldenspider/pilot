@@ -99,6 +99,9 @@ func (m *ClusterManager) InitRouter(r *gin.RouterGroup) error {
 		sc := &pb.Service{}
 		c.BindJSON(sc)
 
+		if sc.Id == "" {
+			sc.Id = string(ServiceHostname(sc.Name, sc.Namespace))
+		}
 		if sid != sc.Id {
 			AbortWithError(m.SugaredLogger, c, fmt.Errorf("写入Service的ID（%s）和Path中的ID（%s）不一致。",
 				sc.Id, sid))
@@ -161,7 +164,7 @@ func (m *ClusterManager) InitRouter(r *gin.RouterGroup) error {
 		sid := c.Params.ByName("service")
 
 		insts := []*pb.Instance{}
-		c.BindJSON(insts)
+		c.BindJSON(&insts)
 
 		if e := m.PutServiceInstance(id, sid, insts); e != nil {
 			AbortWithError(m.SugaredLogger, c, e)
